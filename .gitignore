@@ -41,6 +41,8 @@
 /[Aa]ssets/Plugins/Editor/JetBrains*
 # Jetbrains Rider personal-layer settings
 *.DotSettings.user
+# Rider 的本地配置目录（不进仓库）
+.idea/
 
 # Visual Studio cache directory
 .vs/
