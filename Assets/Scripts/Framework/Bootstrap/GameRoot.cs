@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Framework.Core;
 using Framework.Services.Input;
+using Framework.Services.SceneFlow;
 using UnityEngine;
 
 namespace Framework.Bootstrap
@@ -39,8 +40,8 @@ namespace Framework.Bootstrap
         private void BuildManagers()
         {
             // 每做好一个管理器，在这里 new 一行并取消注释
-            _managers.Add(new InputManager(Config.InputAsset));   // Order 10
-            // _managers.Add(new SceneFlowManager());                   // Order 30
+            _managers.Add(new InputManager(Config.InputAsset));     // Order 10
+            _managers.Add(new SceneFlowManager());                  // Order 30
             // _managers.Add(new UIManager());                          // Order 40
         }
 

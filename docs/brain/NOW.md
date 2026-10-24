@@ -23,11 +23,14 @@
 - 模板自带的 `Assets/InputSystem_Actions.inputactions` 与 6.3 的 3D 模板逐字节一致，是默认 project-wide actions。
 - 仓库里还有未提交内容：19 个 `AD` 旧暂存项（文件已不在磁盘）、`Assets/Scripts/Main.cs` 的本地改动。
 
-## 下一步
+## 下一步（待办）
 
-- 清理并提交当前工作区（未跟踪文件 + 旧暂存项 + URP 设置改动）。
-- 确定玩法细节（视角、核心机制、关卡规模），再定 `Assets/Scripts` 目录结构。
-- 搭框架骨架：表现层 / 逻辑层 / 数据层的空壳 + 一个能跑通的最小循环。
+- UI 框架：方案 B（分层 Canvas + 每层一个栈），四层 Screen/Panel/Popup/Overlay；单弹窗、全模态；CanvasGroup 淡入淡出；输入启停交给流程控制器。
+- 资源服务：把异步加载/实例化从 UI 拆出来，单独做 `IAssetService`（先包装 Resources/直接引用，后换 Addressables）。
+- Common 目录（公用基类）：泛型 MonoBehaviour 单例基类、泛型 ScriptableObject 单例基类、可复用 FSM 状态机基类。
+- 音频系统（重点）：AudioMixer 四总线 + AudioManager + 3D 音源池 + 音乐/环境淡入淡出。
+- 清理并提交当前工作区（未删除的旧暂存项 + 未提交文件）。
+- 确定玩法细节（视角、核心机制、关卡规模），再定 `Assets/Scripts/Gameplay` 目录结构。
 
 ## 未决问题
 
