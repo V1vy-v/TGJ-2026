@@ -98,6 +98,7 @@ unity command build status                   # 轮询到 completed
 - 使用 Unity 6000.3.25f1 对应的 API，不写更旧或更新版本的用法。
 - Inspector 值用 `[SerializeField] private` 字段，不用 public 字段。
 - 命名：私有字段 `_camelCase`（含 `[SerializeField]` 字段）；公开成员（类型、属性、方法、事件）PascalCase；参数 camelCase；不用无意义缩写。
+- 代码分区：用 `#region` 分四块，标题用中文——`状态`、`生命周期`、`对外接口`、`内部实现`；不嵌套 region。
 - 在 `Awake` / `Start` 中缓存组件引用，不要每帧 `GetComponent`。
 - 输入走 Input System（InputAction / PlayerInput / 生成的 C# 包装类）。
 - 代码放 `Assets/Scripts/<层>/`，命名空间按目录（`Framework.Core`、`Framework.Services.Audio`、`Gameplay...`），不加 `TGJ` 根。

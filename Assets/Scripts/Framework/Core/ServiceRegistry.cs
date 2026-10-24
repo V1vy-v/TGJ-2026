@@ -11,10 +11,8 @@ namespace Framework.Core
         public void Register<T>(T service) where T : class
         {
             var type = typeof(T);
-            if (_services.ContainsKey(type))
-                throw new InvalidOperationException($"服务已注册: {type.Name}");
-
-            _services.Add(type, service);
+            if (!_services.TryAdd(type, service))
+                throw new InvalidOperationException($"[ServiceRegistry] 服务已注册: {type.Name}");
         }
 
         public T Get<T>() where T : class
@@ -22,7 +20,7 @@ namespace Framework.Core
             if (_services.TryGetValue(typeof(T), out var service))
                 return (T)service;
 
-            throw new InvalidOperationException($"服务未注册: {typeof(T).Name}");
+            throw new InvalidOperationException($"[ServiceRegistry] 服务未注册: {typeof(T).Name}");
         }
 
         public bool TryGet<T>(out T service) where T : class

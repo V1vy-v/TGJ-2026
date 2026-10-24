@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c70d419f9fea48dca0ea938f5ea3801d, type: 3}
   m_Name: BootstrapConfig
   m_EditorClassIdentifier: Assembly-CSharp::TGJ.Framework.BootstrapConfig
-  GameInput: {fileID: 0}
-  MainAudioMixer: {fileID: 0}
+  _inputAsset: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  _mainAudioMixer: {fileID: 0}

@@ -9,9 +9,11 @@ namespace Framework.Bootstrap
     public class BootstrapConfig : ScriptableObject
     {
         [SerializeField][Header("输入系统配置")]
-        private InputActionAsset _gameInput;
+        private InputActionAsset _inputAsset;
+        public InputActionAsset InputAsset => _inputAsset;
 
         [SerializeField][Header("音频系统配置")]
         private AudioMixer _mainAudioMixer;
+        public AudioMixer MainAudioMixer => _mainAudioMixer;
     }
 }
