@@ -40,3 +40,9 @@
 - CLI 使用方式更正：优先 `unity command`（Pipeline 实时模式），batchmode 只作兜底。
   - 原因：项目装了 com.unity.pipeline 0.9.1-exp.1 和 `unity` CLI；实测编辑器开着时 `editor status`、`console status`、`script recompile`、`build get_settings` 可用，沙盒内可跑、不用关编辑器。
   - 替代方案：只用 batchmode（每步都要关编辑器+Hub）；dotnet build（只查 C# 编译）。
+- 命名空间不带 `TGJ` 根：改成 `Framework.Core`、`Framework.Bootstrap`、`Framework.Services.Input/Audio/SceneFlow/UI`。
+  - 原因：所有代码都在 `Framework/` 目录下，层级本身已经区分清楚，多余根只增加输入量；项目无同名冲突。
+  - 替代方案：保留 `TGJ` 根（便于将来抽成 UPM 包时防冲突）。
+- 框架目录结构：`Assets/Scripts/Framework/{Core,Bootstrap,Services/{Input,Audio,SceneFlow,UI}}`，每个叶子目录一个命名空间，Framework 根目录不放 .cs。
+  - 原因：一个根下整包复制即可复用；Core 纯 C#、Bootstrap 是装配点、Services 是可替换实现。
+  - 替代方案：Core 与 Services 平级放在 Assets/Scripts 下（复用时要挑文件夹）。

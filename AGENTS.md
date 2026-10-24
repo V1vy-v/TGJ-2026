@@ -28,8 +28,9 @@
 - 渲染：URP 17.0.1，只用 PC Renderer（`Assets/Settings/PC_RPAsset` + `PC_Renderer`）；当前质量等级为 PC（索引 1），Mobile 那套不再使用
 - 输入：Input System 1.20.1（`activeInputHandler = 1`，只启用新输入系统；不要用 `UnityEngine.Input`）。注意：模板自带的 1.12.0 与 6000.3 不兼容（`BuildTarget.ReservedCFE` 已被移除），已升到 1.20.1
 - UI：uGUI 2.0.0（TextMeshPro 随包）
-- 其他已装：AI Navigation 2.0.0、Timeline 1.8.6、Test Framework 1.4.2、Visual Scripting 1.9.1（不主动使用）
-- 脚本：单一 `Assembly-CSharp`，命名空间根 `TGJ`，用文件夹 + 命名空间分层，不建 asmdef
+- 相机：Cinemachine 3.1.7（`CinemachineCamera` + `CinemachineBrain`，不是 v2 的 Virtual Camera）
+- 其他已装：Test Framework 1.4.2（写测试用）；已移除 AI Navigation、Timeline、Visual Scripting、Collab Proxy，需要时再加
+- 脚本：单一 `Assembly-CSharp`，命名空间按目录分段、不带 `TGJ` 根（`Framework.Core`、`Framework.Services.Input`、`Gameplay`…），不建 asmdef
 - 目标平台：Windows，StandaloneWindows64
 - 编辑器路径：`D:\Programdata\UnityHub\Editor\6000.3.25f1\Editor\Unity.exe`
 - 外部代码编辑器：Rider 2026.2.3.1（`D:\Programdata\JetBrains Rider 2026.2.3.1\bin\rider64.exe`），已在 Unity 的 Preferences > External Tools 中设为默认；代码补全、调试走 Rider 的 Unity 集成
@@ -80,8 +81,9 @@ unity command build status                   # 轮询到 completed
 
 ## 如何与我协作
 
-- 你是我的开发助手，默认给我完整文件代码 + 挂载说明；我负责建文件、挂组件、运行验证。只有我说「你来改」时，你才直接改 `Assets` 里的文件。
-- 每份代码要带上：文件放哪个路径、挂到哪个 GameObject、Inspector 要填什么、怎么验证生效。
+- 你是我的开发助手，默认用引导式协作：先给约束、决策点和验收标准，我自己写代码；只有我卡住或明确要代码时，你才给最小可用的片段或完整实现，并说明给了什么、为什么给。
+- 我负责建文件、挂组件、运行验证；只有我说「你来改」时，你才直接改 `Assets` 里的文件。
+- 你给我的每段代码（或我写完的代码）都要能对应到：文件放哪、挂到哪个 GameObject、Inspector 填什么、怎么验证生效。
 - 重大改动（新增系统、调整场景结构、改数据结构）前，先用要点列出计划和影响，等我确认。
 - 我在学习阶段：解释为什么这样分层、为什么用这个 API；指出可替换的地方，也指出你省略了什么。不要堆用不上的抽象。
 - 报错时不允许给我不保证正确的解决步骤。先复现、读日志、查 6000.3 文档；能确认的说明依据，不能确认的直说不确定，给出排查方案，和我一起定位。
@@ -95,9 +97,10 @@ unity command build status                   # 轮询到 completed
 
 - 使用 Unity 6000.3.25f1 对应的 API，不写更旧或更新版本的用法。
 - Inspector 值用 `[SerializeField] private` 字段，不用 public 字段。
+- 命名：私有字段 `_camelCase`（含 `[SerializeField]` 字段）；公开成员（类型、属性、方法、事件）PascalCase；参数 camelCase；不用无意义缩写。
 - 在 `Awake` / `Start` 中缓存组件引用，不要每帧 `GetComponent`。
 - 输入走 Input System（InputAction / PlayerInput / 生成的 C# 包装类）。
-- 代码放 `Assets/Scripts/<层>/`，命名空间用 `TGJ.<层>`。
+- 代码放 `Assets/Scripts/<层>/`，命名空间按目录（`Framework.Core`、`Framework.Services.Audio`、`Gameplay...`），不加 `TGJ` 根。
 - 分层与依赖方向（具体目录树等玩法确定后再定）：
   - 表现层：MonoBehaviour——输入读取、相机、动画、UI 绑定、音效触发，只负责把引擎事件转成调用。
   - 逻辑层：纯 C# 规则——迷宫状态、机关判定、解谜条件、流程推进；不继承 MonoBehaviour，方便脱离场景测试。

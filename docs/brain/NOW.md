@@ -4,7 +4,7 @@
 
 ## 同步基线
 
-- 最后同步的 commit：`9437e70`（初始化项目），2026-10-24。
+- 最后同步的 commit：`8e23c8e`（解决CLI问题，重新规划与AI的协作方式），2026-10-24。
 - 我每次涉及代码前都会跑：`git log --oneline <基线>..HEAD`、`git status --porcelain`、`git diff --stat`，再读实际文件；**以磁盘为准，不以记忆为准**。
 - 每次同步完更新这一行。
 
@@ -21,7 +21,7 @@
 
 - 实时 CLI 走 `unity command`（端口 7800，descriptor 在 `Library/Pipeline/.unity-pipeline-port`），编辑器开着也能用、沙盒内可跑；batchmode 是兜底，需要关编辑器 + Hub 且在沙盒外跑。
 - 模板自带的 `Assets/InputSystem_Actions.inputactions` 与 6.3 的 3D 模板逐字节一致，是默认 project-wide actions。
-- 仓库里还有未提交内容：`AGENTS.md`、`docs/`、`Assets/Scripts/`、`Assets/Scenes/MainScene.unity` 等 8 个未跟踪项，19 个 `AD` 旧暂存项，以及 3 个 URP 设置资源的本地改动。
+- 仓库里还有未提交内容：19 个 `AD` 旧暂存项（文件已不在磁盘）、`Assets/Scripts/Main.cs` 的本地改动。
 
 ## 下一步
 

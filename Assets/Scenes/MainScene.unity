@@ -441,7 +441,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1029694845}
-  - component: {fileID: 1029694844}
+  - component: {fileID: 1029694846}
   m_Layer: 0
   m_Name: '[GameRoot]'
   m_TagString: Untagged
@@ -449,18 +449,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1029694844
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1029694843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 048a30bea23c31d4d8dbbb04d980266e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TGJ.Main
 --- !u!4 &1029694845
 Transform:
   m_ObjectHideFlags: 0
@@ -476,6 +464,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1029694846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1029694843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 406a430e01214654c9901825b03dd0a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TGJ.Framework.GameRoot
+  _bootstrapConfig: {fileID: 11400000, guid: 4874650de4f5aaf4f8f2236a687e63a5, type: 2}
 --- !u!1 &1913166843
 GameObject:
   m_ObjectHideFlags: 0
