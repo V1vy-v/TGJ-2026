@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c70d419f9fea48dca0ea938f5ea3801d, type: 3}
   m_Name: BootstrapConfig
   m_EditorClassIdentifier: Assembly-CSharp::TGJ.Framework.BootstrapConfig
-  _inputAsset: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  _mainAudioMixer: {fileID: 0}
+  inputAsset: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  mainAudioMixer: {fileID: 0}
+  uiRoot: {fileID: 5267528224484321319, guid: b7dd44e40f8166749b515c340a12390c, type: 3}
+  uiRegistry: {fileID: 11400000, guid: 0e43da8a846ffe741ae813005189b0e6, type: 2}

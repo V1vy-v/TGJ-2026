@@ -16,7 +16,7 @@ namespace Framework.Services.Input
 
         public void Dispose()
         {
-            if (_disposed) return;
+            if (_disposed) return;   // 幂等：重复 Dispose 不会重复释放
             _disposed = true;
             _owner.ReleaseMap(_mapName);
         }
