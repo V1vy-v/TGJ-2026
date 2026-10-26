@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Framework.Core;
+using Framework.Services.Assets;
+using Framework.Services.Assets.Providers;
 using Framework.Services.Input;
 using Framework.Services.SceneFlow;
 using Framework.Services.UI;
@@ -42,7 +44,7 @@ namespace Framework.Bootstrap
 
         private void BuildManagers()
         {
-            // 每做好一个管理器，在这里 new 一行并取消注释
+            _managers.Add(new AssetManager(new YooAssetProvider("DefaultPackage")));
             _managers.Add(new InputManager(Config.InputAsset));     // Order 10
             _managers.Add(new SceneFlowManager());                  // Order 30
             _managers.Add(new UIManager(Config.UIRoot, Config.UIRegistry)); // Order 40

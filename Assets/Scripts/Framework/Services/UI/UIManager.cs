@@ -132,6 +132,16 @@ namespace Framework.Services.UI
             OpenView(view, UILayer.Popup, args);
         }
 
+        public void OpenOverlay<T>(object args = null) where T : UIBase
+        {
+            if (!TryGetEntry<T>(out var entry)) return;
+            if (!CheckLayer(entry, UILayer.Overlay)) return;
+
+            var view = GetOrCreate<T>(entry, UILayer.Overlay);
+            if (view != null)
+                OpenView(view, UILayer.Overlay, args);
+        }
+
         public void Close<T>() where T : UIBase
         {
             if (_screen != null && _screen.GetType() == typeof(T))

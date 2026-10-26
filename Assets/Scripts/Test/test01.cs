@@ -1,18 +1,24 @@
-using System.Collections;
 using Framework.Bootstrap;
-using Framework.Services.SceneFlow;
+using Framework.Services.Assets;
+using Framework.Services.UI;
+using Gameplay.UI;
 using UnityEngine;
 
 public class test01 : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
-        StartCoroutine(TestSceneFlowManager());
+        var awaitable = Test();
     }
-    IEnumerator TestSceneFlowManager()
+
+    private async Awaitable Test()
     {
-        yield return new WaitForSeconds(2f);
-        GameRoot.Instance.Services.Get<ISceneFlowService>().LoadScene("GameScene");
+        await Awaitable.WaitForSecondsAsync(1f);
+
+        var assets = GameRoot.Instance.Services.Get<IAssetService>();
+        var handle = await assets.LoadAsync<GameObject>(AssetKeys.MainMenuScreen);
+        Debug.Log($"[Test] loaded: {handle.Asset.name}");
+        
+        GameRoot.Instance.Services.Get<UIManager>().OpenScreen<MainMenuScreen>();
     }
 }

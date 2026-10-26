@@ -11,10 +11,13 @@ namespace Framework.Services.UI
     {
         #region 状态
 
-        [SerializeField] private CanvasGroup canvasGroup;
-        [SerializeField] private float fadeDuration = 0.15f;
+        private bool _created;
+        private bool _invalid;
 
+        private CanvasGroup _canvasGroup;
         private Coroutine _fadeRoutine;
+
+        [SerializeField] private float fadeDuration = 0.15f;
 
         #endregion
 
@@ -22,11 +25,7 @@ namespace Framework.Services.UI
 
         protected virtual void Awake()
         {
-            if (canvasGroup == null)
-            {
-                Debug.LogError($"[UIBase] {name} 缺少 CanvasGroup，组件已禁用", this);
-                enabled = false;
-            }
+            EnsureCreated();
         }
 
         protected virtual void OnDestroy()
@@ -43,6 +42,9 @@ namespace Framework.Services.UI
         /// <summary>淡出完成、即将隐藏时调用。</summary>
         protected virtual void OnHide() { }
 
+        /// <summary>首次使用前调用一次（Awake 或 Setup，以先到者为准），用于控件缓存与自身监听绑定。</summary>
+        protected virtual void OnCreate() { }
+
         /// <summary>实例被销毁时调用（缓存的界面关闭时不会触发）。</summary>
         protected virtual void OnDestroyed() { }
 
@@ -52,24 +54,26 @@ namespace Framework.Services.UI
 
         public void Setup(object args)
         {
+            if (!EnsureCreated()) return;
+
             OnSetup(args);
         }
 
         public void Show()
         {
-            if (canvasGroup == null) return;
+            if (!EnsureCreated()) return;
 
-            canvasGroup.gameObject.SetActive(true);
+            _canvasGroup.gameObject.SetActive(true);
             if (_fadeRoutine != null)
                 StopCoroutine(_fadeRoutine);
 
             _fadeRoutine = StartCoroutine(ShowCoroutine());
-            canvasGroup.blocksRaycasts = true;
+            _canvasGroup.blocksRaycasts = true;
         }
 
         public void Hide()
         {
-            if (canvasGroup == null) return;
+            if (!EnsureCreated()) return;
             if (!gameObject.activeInHierarchy) return;
 
             if (_fadeRoutine != null)
@@ -81,7 +85,7 @@ namespace Framework.Services.UI
         /// <summary>跳过淡出，立即隐藏。Screen 关闭时由管理器调用。</summary>
         public void HideImmediate()
         {
-            if (canvasGroup == null) return;
+            if (!EnsureCreated()) return;
 
             if (_fadeRoutine != null)
             {
@@ -89,30 +93,52 @@ namespace Framework.Services.UI
                 _fadeRoutine = null;
             }
 
-            canvasGroup.alpha = 0f;
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
+            _canvasGroup.alpha = 0f;
+            _canvasGroup.interactable = false;
+            _canvasGroup.blocksRaycasts = false;
 
             OnHide();
-            canvasGroup.gameObject.SetActive(false);
+            _canvasGroup.gameObject.SetActive(false);
         }
 
         #endregion
 
         #region 内部实现
 
+        /// <summary>保证 OnCreate 只执行一次；缺少 CanvasGroup 时只报一次错并返回 false。</summary>
+        private bool EnsureCreated()
+        {
+            if (_created) return true;
+            if (_invalid) return false;
+
+            if (_canvasGroup == null)
+                _canvasGroup = GetComponent<CanvasGroup>();
+
+            if (_canvasGroup == null)
+            {
+                _invalid = true;
+                Debug.LogError($"[UIBase] {name} 根节点缺少 CanvasGroup，组件已禁用", this);
+                enabled = false;
+                return false;
+            }
+
+            _created = true;
+            OnCreate();
+            return true;
+        }
+
         private float FadeStep => Time.deltaTime / Mathf.Max(fadeDuration, 0.01f);
 
         private IEnumerator ShowCoroutine()
         {
-            while (canvasGroup.alpha < 0.95f)
+            while (_canvasGroup.alpha < 0.95f)
             {
-                canvasGroup.alpha = Mathf.MoveTowards(canvasGroup.alpha, 1f, FadeStep);
+                _canvasGroup.alpha = Mathf.MoveTowards(_canvasGroup.alpha, 1f, FadeStep);
                 yield return null;
             }
 
-            canvasGroup.alpha = 1f;
-            canvasGroup.interactable = true;
+            _canvasGroup.alpha = 1f;
+            _canvasGroup.interactable = true;
             OnShow();
 
             _fadeRoutine = null;
@@ -120,18 +146,18 @@ namespace Framework.Services.UI
 
         private IEnumerator HideCoroutine()
         {
-            while (canvasGroup.alpha > 0.05f)
+            while (_canvasGroup.alpha > 0.05f)
             {
-                canvasGroup.alpha = Mathf.MoveTowards(canvasGroup.alpha, 0f, FadeStep);
+                _canvasGroup.alpha = Mathf.MoveTowards(_canvasGroup.alpha, 0f, FadeStep);
                 yield return null;
             }
 
-            canvasGroup.alpha = 0f;
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
+            _canvasGroup.alpha = 0f;
+            _canvasGroup.interactable = false;
+            _canvasGroup.blocksRaycasts = false;
 
             OnHide();
-            canvasGroup.gameObject.SetActive(false);
+            _canvasGroup.gameObject.SetActive(false);
 
             _fadeRoutine = null;
         }

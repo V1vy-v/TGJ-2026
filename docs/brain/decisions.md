@@ -46,3 +46,15 @@
 - 框架目录结构：`Assets/Scripts/Framework/{Core,Bootstrap,Services/{Input,Audio,SceneFlow,UI}}`，每个叶子目录一个命名空间，Framework 根目录不放 .cs。
   - 原因：一个根下整包复制即可复用；Core 纯 C#、Bootstrap 是装配点、Services 是可替换实现。
   - 替代方案：Core 与 Services 平级放在 Assets/Scripts 下（复用时要挑文件夹）。
+
+## 2026-10-26
+
+- UI 框架保持现状，MVC + 异步加载的重构延后到本项目结束。
+  - 原因：当前 UI（UIRegistry 直接引用预制体、同步打开）已能支撑 Jam；改异步会牵动打开时序、状态查询和所有调用点，收益要到项目后期才体现。
+  - 替代方案：现在改成“特性/类型名 + 异步加载”（可行，但会挤占玩法和音频时间）。
+- 资源底层选 YooAsset 3.0.6（git tag 锁定），开发期 `EditorSimulateMode`、出包 `OfflinePlayMode`；热更/远程后期再做。
+  - 原因：已有 AB/Collector 经验，模拟模式免打包、迭代快；Provider 抽象保证以后可换 Addressables。
+  - 替代方案：Addressables（官方维护但配置重）、Resources 薄封装（无 AB 能力）。
+- 不建 key→address 映射表，地址即 key，用 `AssetKeys` 常量收口；Collector 地址规则统一用“分组名_文件名”。
+  - 原因：地址已经短且唯一，表是重复配置，且容易出现“表和 Collector 对不上”。
+  - 替代方案：ScriptableObject 资源表（资源多、需要别名时再上）。

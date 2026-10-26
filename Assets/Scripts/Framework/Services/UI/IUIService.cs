@@ -12,6 +12,7 @@ namespace Framework.Services.UI
         void OpenScreen<T>(object args = null) where T : UIBase;
         void OpenPanel<T>(object args = null) where T : UIBase;
         void OpenPopup<T>(object args = null, Action onClosed = null) where T : UIBase;
+        void OpenOverlay<T>(object args = null) where T : UIBase;
 
         void Close<T>() where T : UIBase;
         void CloseTop(UILayer layer);

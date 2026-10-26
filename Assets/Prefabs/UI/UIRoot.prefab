@@ -87,7 +87,6 @@ GameObject:
   - component: {fileID: 5387676126691682045}
   - component: {fileID: 6176255437188379294}
   - component: {fileID: 2553512891983336556}
-  - component: {fileID: 7726275544994738479}
   m_Layer: 5
   m_Name: OverlayLayer
   m_TagString: Untagged
@@ -177,18 +176,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!225 &7726275544994738479
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1183272713866152129}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &2901166513746844538
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,7 +188,6 @@ GameObject:
   - component: {fileID: 3656798399491287971}
   - component: {fileID: 7865656595666704358}
   - component: {fileID: 2552244907627182789}
-  - component: {fileID: 5374612969876669726}
   m_Layer: 5
   m_Name: PanelLayer
   m_TagString: Untagged
@@ -291,18 +277,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!225 &5374612969876669726
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2901166513746844538}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &3786175931955368099
 GameObject:
   m_ObjectHideFlags: 0
@@ -315,7 +289,6 @@ GameObject:
   - component: {fileID: 7057125104591598898}
   - component: {fileID: 5656244481065649188}
   - component: {fileID: 3337223419363378713}
-  - component: {fileID: 3372527450165146216}
   m_Layer: 5
   m_Name: PopupLayer
   m_TagString: Untagged
@@ -406,18 +379,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!225 &3372527450165146216
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3786175931955368099}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &5267528224484321319
 GameObject:
   m_ObjectHideFlags: 0
@@ -531,7 +492,6 @@ GameObject:
   - component: {fileID: 6805481811309150782}
   - component: {fileID: 2172661357909779227}
   - component: {fileID: 3901223991598300485}
-  - component: {fileID: 3639779648977852644}
   m_Layer: 5
   m_Name: ScreenLayer
   m_TagString: Untagged
@@ -621,15 +581,3 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!225 &3639779648977852644
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5291515796738061627}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0

@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Framework.Services.UI.UIRegistry
   uiGroups:
   - layer: 0
-    prefabs: []
+    prefabs:
+    - {fileID: 1619849187514536895, guid: 30bf17db6dfcc614b88c27258300d90e, type: 3}
   - layer: 100
     prefabs: []
   - layer: 200
     prefabs: []
   - layer: 300
-    prefabs: []
+    prefabs:
+    - {fileID: -9126205388854495088, guid: a14804f454049634488e1b5dde19a7b0, type: 3}
