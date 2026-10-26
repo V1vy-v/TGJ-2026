@@ -1,16 +1,13 @@
-using System;
 using UnityEngine.InputSystem;
 
 namespace Framework.Services.Input
 {
     /// <summary>
-    /// 通用输入服务接口
+    /// 输入服务：只负责提供 map 和兜底关闭，不维护 map 的启停状态。
     /// </summary>
     public interface IInputService
     {
-        InputActionAsset InputAsset { get; }
-        IDisposable EnableMap(string mapName);
-        bool IsMapEnabled(string mapName);
-        InputAction GetAction(string mapName, string actionName);
+        InputActionMap GetMap(string mapName);
+        void DisableAll();
     }
 }

@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Framework.Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,8 +9,8 @@ namespace Framework.Services.Input
         #region 状态
 
         public int Order { get; } = 10;
-        public InputActionAsset InputAsset { get; }
-        private readonly Dictionary<string, int> _mapRefCounts = new();
+
+        private readonly InputActionAsset _asset;
 
         #endregion
 
@@ -20,74 +18,49 @@ namespace Framework.Services.Input
 
         public InputManager(InputActionAsset asset)
         {
-            if(asset == null)
-            {
-                Debug.LogError($"[InputManager]: {nameof(asset)} is null");
-                return;
-            }
-            InputAsset = asset;
+            _asset = asset;
+
+            if (_asset == null)
+                Debug.LogError("[InputManager] InputActionAsset 为空");
         }
+
         public void Initialize(ServiceRegistry services, MonoBehaviour host)
         {
             if (services == null)
             {
-                Debug.LogError($"[InputManager]: {nameof(services)} is null");
+                Debug.LogError("[InputManager] services 为空");
                 return;
             }
-            
+
+            if (_asset == null)
+                return;
+
             services.Register<IInputService>(this);
         }
 
         public void Shutdown()
         {
-            InputAsset.Disable();
-            _mapRefCounts.Clear();
+            DisableAll();
         }
-        
+
         #endregion
 
         #region 对外接口
 
-        public IDisposable EnableMap(string mapName)
+        public InputActionMap GetMap(string mapName)
         {
-            var map = InputAsset.FindActionMap(mapName, throwIfNotFound: true);
+            if (_asset == null)
+                throw new System.InvalidOperationException("[InputManager] 未配置 InputActionAsset");
 
-            _mapRefCounts.TryGetValue(mapName, out var count);
-            if (count == 0)
-                map.Enable();                    // 第一个占用者才真正打开
-
-            _mapRefCounts[mapName] = count + 1;
-            return new MapScope(this, mapName);  // 返回“占用凭证”
-        }
-        
-        public bool IsMapEnabled(string mapName)
-        {
-            if (!_mapRefCounts.TryGetValue(mapName, out var reference))
-                return false;
-            return reference > 0;
+            return _asset.FindActionMap(mapName, throwIfNotFound: true);
         }
 
-        public InputAction GetAction(string mapName, string actionName)
+        public void DisableAll()
         {
-            return InputAsset.FindAction($"{mapName}/{actionName}", throwIfNotFound: true);
-        }
-        #endregion
+            if (_asset == null)
+                return;
 
-        #region 内部实现
-        
-        internal void ReleaseMap(string mapName)
-        {
-            if (!_mapRefCounts.TryGetValue(mapName, out var count)) return;
-
-            if (count <= 1)
-            {
-                _mapRefCounts.Remove(mapName);
-                InputAsset.FindActionMap(mapName, throwIfNotFound: true).Disable();
-            }
-            else
-            {
-                _mapRefCounts[mapName] = count - 1;
-            }
+            _asset.Disable();
         }
 
         #endregion
