@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b56ac0a79234f54b191f79374695f56, type: 3}
   m_Name: PlayerConfig
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Player.PlayerConfig
-  moveSpeed: 10
+  moveSpeed: 2
   turnSpeed: 720
   gravity: 20
-  jumpHeight: 1
+  jumpHeight: 0.5
