@@ -2,6 +2,7 @@ using Framework.Bootstrap;
 using Framework.Services.Input;
 using Gameplay.Player.Act;
 using Gameplay.Player.Input;
+using Gameplay.Player.Interaction;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ namespace Gameplay.Player
         private PerformanceMode _performanceMode;
         private InputModeController _inputMode;
         private PlayerCameraRig _cameraRig;
+        private PlayerInteractor _interactor;
         public PerformanceMode PerformanceMode => _performanceMode;
         
         private PlayerMotor _motor;
@@ -27,6 +29,8 @@ namespace Gameplay.Player
         [SerializeField] Camera mainCamera;
         [SerializeField] float lookSensitivity = 0.15f;
         [SerializeField] bool invertY = false;
+        [SerializeField] private LayerMask interactableLayer;
+        [SerializeField] private float interactRadius = 1f;
         #endregion
 
         #region 生命周期
@@ -41,29 +45,37 @@ namespace Gameplay.Player
 
             _cameraRig = new PlayerCameraRig(_inputReader, orbitalFollow, mainCamera.transform, lookSensitivity, invertY);
             _motor = new PlayerMotor(controller, _inputReader, playerConfig, mainCamera.transform);
+            var context = new PlayerContext(transform);
+            _interactor = new PlayerInteractor(transform, context, interactableLayer, interactRadius);
+            
+            _inputReader.InteractPressed += OnInteractPressed;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
+
 
         private void Update()
         {
             _inputReader.Poll();
             _cameraRig.Tick();
             _motor.Tick(Time.deltaTime);
-        }
-
-        private void FixedUpdate()
-        {
-            
+            _interactor.Tick();
         }
         
         private void OnDestroy()
         {
+            _inputReader.InteractPressed -= OnInteractPressed;
+
             _performanceMode?.Dispose();
             _inputReader?.Dispose();
             _inputMode?.Dispose();
         }
 
         #endregion
+        
+        private void OnInteractPressed()
+        {
+            _interactor.TryInteract();
+        }
     }
 }
