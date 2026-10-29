@@ -4,13 +4,14 @@ using UnityEngine;
 
 namespace Gameplay.Player.Act
 {
-    public class PlayerMotor
+    public class PlayerMotor : IDisposable
     {
         private readonly CharacterController _controller;
         private readonly PlayerInputReader _playerInput;
         private readonly PlayerConfig _playerConfig;
         private readonly Transform _camera;
         private float _verticalVelocity = -2f;
+        private bool _disposed;
 
         public PlayerMotor(CharacterController controller, PlayerInputReader playerInput, PlayerConfig playerConfig,
             Transform mainCameraTransform)
@@ -61,6 +62,14 @@ namespace Gameplay.Player.Act
         {
             if (!_controller.isGrounded) return;
             _verticalVelocity = Mathf.Sqrt(2f * _playerConfig.Gravity * _playerConfig.JumpHeight);
+        }
+
+        public void Dispose()
+        {
+            if (_disposed) return;
+
+            _disposed = true;
+            _playerInput.JumpPressed -= Jump;
         }
     }
 }

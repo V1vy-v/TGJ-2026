@@ -17,11 +17,11 @@ namespace Gameplay.Player.Input
         private readonly InputAction _tool2;
         private readonly InputAction _useTool;
         private readonly InputAction _record;
-        private readonly InputAction _adjustPitch;
+        private readonly InputAction _scroll;
 
         public Vector2 MoveValue { get; private set; }
         public Vector2 LookValue { get; private set; }
-        public float AdjustPitchValue { get; private set; }
+        public float ScrollValue { get; private set; }
 
         public event Action JumpPressed;
         public event Action InteractPressed;
@@ -46,7 +46,7 @@ namespace Gameplay.Player.Input
             _tool2 = _map.FindAction("SelectTool2", true);
             _useTool = _map.FindAction("UseTool", true);
             _record = _map.FindAction("Record", true);
-            _adjustPitch = _map.FindAction("AdjustPitch", true);
+            _scroll = _map.FindAction("Scroll", true);
 
             _jump.performed += OnJump;
             _interact.performed += OnInteract;
@@ -64,13 +64,13 @@ namespace Gameplay.Player.Input
             {
                 MoveValue = Vector2.zero;
                 LookValue = Vector2.zero;
-                AdjustPitchValue = 0f;
+                ScrollValue = 0f;
                 return;
             }
 
             MoveValue = _move.ReadValue<Vector2>();
             LookValue = _look.ReadValue<Vector2>();
-            AdjustPitchValue = _adjustPitch.ReadValue<float>();
+            ScrollValue = _scroll.ReadValue<float>();
         }
 
         public void Dispose()

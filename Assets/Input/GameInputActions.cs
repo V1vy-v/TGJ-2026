@@ -106,7 +106,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""name"": ""Look"",
                     ""type"": ""Value"",
                     ""id"": ""6b444451-8a00-4d00-a97e-f47457f736a8"",
-                    ""expectedControlType"": ""Vector3"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true,
@@ -128,7 +128,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""id"": ""852140f2-7766-474d-8707-702459ba45f3"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": """",
                     ""initialStateCheck"": false,
                     ""priority"": 0
                 },
@@ -183,7 +183,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""priority"": 0
                 },
                 {
-                    ""name"": ""AdjustPitch"",
+                    ""name"": ""Scroll"",
                     ""type"": ""Value"",
                     ""id"": ""8c164c8e-2ae2-4277-b399-b1fd70f27f8d"",
                     ""expectedControlType"": ""Axis"",
@@ -221,7 +221,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -232,7 +232,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -243,7 +243,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -254,7 +254,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -265,7 +265,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -276,7 +276,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -287,7 +287,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -298,7 +298,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -309,7 +309,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -350,7 +350,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""1c04ea5f-b012-41d1-a6f7-02e963b52893"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -361,10 +361,10 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""07a68297-7e4c-4d2f-b914-6a184114125c"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""ToggleGlasses"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -375,7 +375,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""HearingPulse"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -386,7 +386,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""UseTool"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -397,8 +397,8 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""AdjustPitch"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Scroll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -408,7 +408,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Record"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -538,7 +538,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/leftStick/up"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -549,7 +549,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/rightStick/up"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -560,7 +560,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/leftStick/down"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -571,7 +571,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/rightStick/down"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -582,7 +582,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/leftStick/left"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -593,7 +593,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/rightStick/left"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -604,7 +604,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/leftStick/right"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -615,7 +615,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/rightStick/right"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -626,7 +626,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/dpad"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -846,7 +846,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -857,7 +857,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Pen>/tip"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -890,7 +890,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Mouse>/scroll"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""ScrollWheel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1108,7 +1108,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         m_Player_SelectTool1 = m_Player.FindAction("SelectTool1", throwIfNotFound: true);
         m_Player_SelectTool2 = m_Player.FindAction("SelectTool2", throwIfNotFound: true);
         m_Player_UseTool = m_Player.FindAction("UseTool", throwIfNotFound: true);
-        m_Player_AdjustPitch = m_Player.FindAction("AdjustPitch", throwIfNotFound: true);
+        m_Player_Scroll = m_Player.FindAction("Scroll", throwIfNotFound: true);
         m_Player_Record = m_Player.FindAction("Record", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
@@ -1219,7 +1219,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_SelectTool1;
     private readonly InputAction m_Player_SelectTool2;
     private readonly InputAction m_Player_UseTool;
-    private readonly InputAction m_Player_AdjustPitch;
+    private readonly InputAction m_Player_Scroll;
     private readonly InputAction m_Player_Record;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
@@ -1269,9 +1269,9 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @UseTool => m_Wrapper.m_Player_UseTool;
         /// <summary>
-        /// Provides access to the underlying input action "Player/AdjustPitch".
+        /// Provides access to the underlying input action "Player/Scroll".
         /// </summary>
-        public InputAction @AdjustPitch => m_Wrapper.m_Player_AdjustPitch;
+        public InputAction @Scroll => m_Wrapper.m_Player_Scroll;
         /// <summary>
         /// Provides access to the underlying input action "Player/Record".
         /// </summary>
@@ -1329,9 +1329,9 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
             @UseTool.started += instance.OnUseTool;
             @UseTool.performed += instance.OnUseTool;
             @UseTool.canceled += instance.OnUseTool;
-            @AdjustPitch.started += instance.OnAdjustPitch;
-            @AdjustPitch.performed += instance.OnAdjustPitch;
-            @AdjustPitch.canceled += instance.OnAdjustPitch;
+            @Scroll.started += instance.OnScroll;
+            @Scroll.performed += instance.OnScroll;
+            @Scroll.canceled += instance.OnScroll;
             @Record.started += instance.OnRecord;
             @Record.performed += instance.OnRecord;
             @Record.canceled += instance.OnRecord;
@@ -1373,9 +1373,9 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
             @UseTool.started -= instance.OnUseTool;
             @UseTool.performed -= instance.OnUseTool;
             @UseTool.canceled -= instance.OnUseTool;
-            @AdjustPitch.started -= instance.OnAdjustPitch;
-            @AdjustPitch.performed -= instance.OnAdjustPitch;
-            @AdjustPitch.canceled -= instance.OnAdjustPitch;
+            @Scroll.started -= instance.OnScroll;
+            @Scroll.performed -= instance.OnScroll;
+            @Scroll.canceled -= instance.OnScroll;
             @Record.started -= instance.OnRecord;
             @Record.performed -= instance.OnRecord;
             @Record.canceled -= instance.OnRecord;
@@ -1872,12 +1872,12 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnUseTool(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "AdjustPitch" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Scroll" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnAdjustPitch(InputAction.CallbackContext context);
+        void OnScroll(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Record" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

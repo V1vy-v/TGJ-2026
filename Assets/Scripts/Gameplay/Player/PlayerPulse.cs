@@ -1,16 +1,19 @@
 using UnityEngine;
 
-public class PlayerPulse : MonoBehaviour
+namespace Gameplay.Player
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class PlayerPulse
     {
-        
-    }
+        private readonly Transform _player;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public PlayerPulse(Transform player)
+        {
+            _player = player;
+        }
+        public void Fire()
+        {
+            if (ScanRendererFeature.Instance != null)
+                ScanRendererFeature.Instance.TriggerPulse(_player.position);   // 从玩家位置发射
+        }
     }
 }

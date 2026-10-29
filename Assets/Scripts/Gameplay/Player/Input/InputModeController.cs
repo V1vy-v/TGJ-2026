@@ -9,6 +9,7 @@ namespace Gameplay.Player.Input
         None,
         Player,
         NpcPerformance,
+        Menu,
     }
 
     /// <summary>
@@ -60,7 +61,6 @@ namespace Gameplay.Player.Input
                 InputMode.NpcPerformance => _npcPerformanceMap,
                 _ => null,
             };
-
             _currentMap?.Enable();
             CurrentMode = mode;
 

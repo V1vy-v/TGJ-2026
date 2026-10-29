@@ -1,4 +1,5 @@
 ﻿using Gameplay.Interaction;
+using Gameplay.Interaction.Interface;
 
 namespace Gameplay.Player.Interaction
 {
