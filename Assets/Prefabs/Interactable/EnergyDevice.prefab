@@ -51,7 +51,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 1, z: 1.5}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6708447000626170185
 GameObject:
@@ -62,8 +62,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7867047553211388013}
+  - component: {fileID: 6948670877795210712}
   m_Layer: 0
-  m_Name: "\u80FD\u91CF\u5757"
+  m_Name: EnergyDevice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,15 +78,31 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6708447000626170185}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -32.412743, y: 0.4365002, z: -50.48146}
-  m_LocalScale: {x: 0.34779316, y: 0.34779316, z: 0.34779316}
+  m_LocalScale: {x: 0.34779, y: 0.34779, z: 0.34779}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2721781495429680948}
   - {fileID: 5737980308411118633}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6948670877795210712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6708447000626170185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9034f035375a5a7448118f86c2b980f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Interaction.Puzzle.Energy.EnergyDevice
+  maxEnergy: 6
+  minEnergy: 0
+  initialEnergy: 0
+  isAdjustable: 1
 --- !u!1 &7800506533982222941
 GameObject:
   m_ObjectHideFlags: 0

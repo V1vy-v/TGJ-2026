@@ -156,6 +156,7 @@ Transform:
   - {fileID: 7425320886303411757}
   - {fileID: 49821729179316978}
   - {fileID: 6296690088482808287}
+  - {fileID: 1365536541321564203}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &760733010281075074
@@ -176,10 +177,11 @@ MonoBehaviour:
   mainCamera: {fileID: 0}
   lookSensitivity: 0.15
   invertY: 0
+  interactOrigin: {fileID: 1365536541321564203}
   interactableLayer:
     serializedVersion: 2
     m_Bits: 256
-  interactRadius: 1
+  interactRadius: 0.5
   selfLight: {fileID: 5540807274127449468}
   cinemachineCamera: {fileID: 0}
   visionSettings:
@@ -335,6 +337,37 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &7282071421272942225
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1365536541321564203}
+  m_Layer: 6
+  m_Name: InteractOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1365536541321564203
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7282071421272942225}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3251455783538859970}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7945014912464150794
 GameObject:
   m_ObjectHideFlags: 0

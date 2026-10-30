@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Gameplay.Interaction.Puzzle
+namespace Gameplay.Interaction.Puzzle.SpeakerChain
 {
     /// <summary>
     /// 电梯：在 up / down 两个世界 Y 之间往返，可携带站在上面的角色。
     /// </summary>
-    public class LiftPlatform : MonoBehaviour
+    public class SpeakerPlatform : MonoBehaviour
     {
         [Header("移动范围（世界 Y）")]
         [SerializeField] private float down;

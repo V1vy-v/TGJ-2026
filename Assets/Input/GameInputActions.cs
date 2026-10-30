@@ -153,36 +153,6 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""priority"": 0
                 },
                 {
-                    ""name"": ""SelectTool1"",
-                    ""type"": ""Button"",
-                    ""id"": ""2776c80d-3c14-4091-8c56-d04ced07a2b0"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false,
-                    ""priority"": 0
-                },
-                {
-                    ""name"": ""SelectTool2"",
-                    ""type"": ""Button"",
-                    ""id"": ""f4f14cf0-4c19-49a7-a9bd-1b83217570b8"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false,
-                    ""priority"": 0
-                },
-                {
-                    ""name"": ""UseTool"",
-                    ""type"": ""Button"",
-                    ""id"": ""824bb679-ec61-4de2-8b22-fdf126dd33b4"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false,
-                    ""priority"": 0
-                },
-                {
                     ""name"": ""Scroll"",
                     ""type"": ""Value"",
                     ""id"": ""8c164c8e-2ae2-4277-b399-b1fd70f27f8d"",
@@ -190,16 +160,6 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true,
-                    ""priority"": 0
-                },
-                {
-                    ""name"": ""Record"",
-                    ""type"": ""Button"",
-                    ""id"": ""1fbfb38f-e720-4a33-9153-cbd4420babed"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false,
                     ""priority"": 0
                 }
             ],
@@ -327,28 +287,6 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""1534dc16-a6aa-499d-9c3a-22b47347b52a"",
-                    ""path"": ""<Keyboard>/1"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""SelectTool1"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""cbac6039-9c09-46a1-b5f2-4e5124ccb5ed"",
-                    ""path"": ""<Keyboard>/2"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""SelectTool2"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""1c04ea5f-b012-41d1-a6f7-02e963b52893"",
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
@@ -382,34 +320,12 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""9f2dd2fc-1e6b-4830-bb27-e6d662b3bcee"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""UseTool"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""a053bdaf-8cfb-4d2c-a4af-e2985c09aa78"",
                     ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Scroll"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""5f3f504e-f0f8-4f06-b272-6da496f2862c"",
-                    ""path"": ""<Keyboard>/r"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Record"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1105,11 +1021,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_ToggleGlasses = m_Player.FindAction("ToggleGlasses", throwIfNotFound: true);
         m_Player_HearingPulse = m_Player.FindAction("HearingPulse", throwIfNotFound: true);
-        m_Player_SelectTool1 = m_Player.FindAction("SelectTool1", throwIfNotFound: true);
-        m_Player_SelectTool2 = m_Player.FindAction("SelectTool2", throwIfNotFound: true);
-        m_Player_UseTool = m_Player.FindAction("UseTool", throwIfNotFound: true);
         m_Player_Scroll = m_Player.FindAction("Scroll", throwIfNotFound: true);
-        m_Player_Record = m_Player.FindAction("Record", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1216,11 +1128,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_ToggleGlasses;
     private readonly InputAction m_Player_HearingPulse;
-    private readonly InputAction m_Player_SelectTool1;
-    private readonly InputAction m_Player_SelectTool2;
-    private readonly InputAction m_Player_UseTool;
     private readonly InputAction m_Player_Scroll;
-    private readonly InputAction m_Player_Record;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1257,25 +1165,9 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @HearingPulse => m_Wrapper.m_Player_HearingPulse;
         /// <summary>
-        /// Provides access to the underlying input action "Player/SelectTool1".
-        /// </summary>
-        public InputAction @SelectTool1 => m_Wrapper.m_Player_SelectTool1;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/SelectTool2".
-        /// </summary>
-        public InputAction @SelectTool2 => m_Wrapper.m_Player_SelectTool2;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/UseTool".
-        /// </summary>
-        public InputAction @UseTool => m_Wrapper.m_Player_UseTool;
-        /// <summary>
         /// Provides access to the underlying input action "Player/Scroll".
         /// </summary>
         public InputAction @Scroll => m_Wrapper.m_Player_Scroll;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/Record".
-        /// </summary>
-        public InputAction @Record => m_Wrapper.m_Player_Record;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1320,21 +1212,9 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
             @HearingPulse.started += instance.OnHearingPulse;
             @HearingPulse.performed += instance.OnHearingPulse;
             @HearingPulse.canceled += instance.OnHearingPulse;
-            @SelectTool1.started += instance.OnSelectTool1;
-            @SelectTool1.performed += instance.OnSelectTool1;
-            @SelectTool1.canceled += instance.OnSelectTool1;
-            @SelectTool2.started += instance.OnSelectTool2;
-            @SelectTool2.performed += instance.OnSelectTool2;
-            @SelectTool2.canceled += instance.OnSelectTool2;
-            @UseTool.started += instance.OnUseTool;
-            @UseTool.performed += instance.OnUseTool;
-            @UseTool.canceled += instance.OnUseTool;
             @Scroll.started += instance.OnScroll;
             @Scroll.performed += instance.OnScroll;
             @Scroll.canceled += instance.OnScroll;
-            @Record.started += instance.OnRecord;
-            @Record.performed += instance.OnRecord;
-            @Record.canceled += instance.OnRecord;
         }
 
         /// <summary>
@@ -1364,21 +1244,9 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
             @HearingPulse.started -= instance.OnHearingPulse;
             @HearingPulse.performed -= instance.OnHearingPulse;
             @HearingPulse.canceled -= instance.OnHearingPulse;
-            @SelectTool1.started -= instance.OnSelectTool1;
-            @SelectTool1.performed -= instance.OnSelectTool1;
-            @SelectTool1.canceled -= instance.OnSelectTool1;
-            @SelectTool2.started -= instance.OnSelectTool2;
-            @SelectTool2.performed -= instance.OnSelectTool2;
-            @SelectTool2.canceled -= instance.OnSelectTool2;
-            @UseTool.started -= instance.OnUseTool;
-            @UseTool.performed -= instance.OnUseTool;
-            @UseTool.canceled -= instance.OnUseTool;
             @Scroll.started -= instance.OnScroll;
             @Scroll.performed -= instance.OnScroll;
             @Scroll.canceled -= instance.OnScroll;
-            @Record.started -= instance.OnRecord;
-            @Record.performed -= instance.OnRecord;
-            @Record.canceled -= instance.OnRecord;
         }
 
         /// <summary>
@@ -1851,40 +1719,12 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnHearingPulse(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "SelectTool1" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnSelectTool1(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "SelectTool2" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnSelectTool2(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "UseTool" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnUseTool(InputAction.CallbackContext context);
-        /// <summary>
         /// Method invoked when associated input action "Scroll" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnScroll(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Record" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnRecord(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

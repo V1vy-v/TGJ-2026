@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Gameplay.Interaction.Puzzle
+namespace Gameplay.Interaction.Puzzle.SpeakerChain
 {
     /// <summary>
     /// 喇叭链谜题：所有可调喇叭对准后，持续若干秒，解锁平台。
@@ -10,28 +10,14 @@ namespace Gameplay.Interaction.Puzzle
     /// </summary>
     public class SpeakerChainPuzzle : MonoBehaviour
     {
-        [SerializeField] private List<SpeakerDevice> speakerDeviceList = new();
-        [SerializeField] private List<LiftPlatform> liftPlatformList = new();
+        [SerializeField] private List<SpeakerDevice> speakerDevices = new();
+        [SerializeField] private List<SpeakerPlatform> liftPlatforms = new();
         [SerializeField, Min(0f)] private float solveDelay = 3f;
 
         private bool _solved;
         private float _alignedTimer;
 
         public event Action OnPuzzleDone;
-
-        private void Awake()
-        {
-            if (speakerDeviceList == null) return;
-
-            foreach (var speaker in speakerDeviceList)
-            {
-                if (speaker != null && !speaker.IsAdjustable)
-                {
-                    Debug.LogWarning(
-                        $"[SpeakerChainPuzzle] {speaker.name} 是不可调喇叭，判定时会忽略", this);
-                }
-            }
-        }
 
         private void Update()
         {
@@ -51,14 +37,14 @@ namespace Gameplay.Interaction.Puzzle
 
         private bool AreAllAligned()
         {
-            if (speakerDeviceList == null || speakerDeviceList.Count == 0)
+            if (speakerDevices == null || speakerDevices.Count == 0)
                 return false;
 
             int adjustableCount = 0;
 
-            for (int i = 0; i < speakerDeviceList.Count; i++)
+            for (int i = 0; i < speakerDevices.Count; i++)
             {
-                var speaker = speakerDeviceList[i];
+                var speaker = speakerDevices[i];
                 if (speaker == null) return false;
                 if (!speaker.IsAdjustable) continue;
 
@@ -77,13 +63,13 @@ namespace Gameplay.Interaction.Puzzle
 
             OnPuzzleDone?.Invoke();
 
-            for (int i = 0; i < speakerDeviceList.Count; i++)
-                speakerDeviceList[i]?.PuzzleDone();
+            for (int i = 0; i < speakerDevices.Count; i++)
+                speakerDevices[i]?.PuzzleDone();
 
-            if (liftPlatformList == null) return;
+            if (liftPlatforms == null) return;
 
-            for (int i = 0; i < liftPlatformList.Count; i++)
-                liftPlatformList[i]?.Unlock();
+            for (int i = 0; i < liftPlatforms.Count; i++)
+                liftPlatforms[i]?.Unlock();
         }
     }
 }

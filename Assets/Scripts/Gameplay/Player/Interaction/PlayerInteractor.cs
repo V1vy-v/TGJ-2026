@@ -25,6 +25,7 @@ namespace Gameplay.Player.Interaction
         private IInteractable _interactable;
         private IReadOnlyList<InteractionOption> _options;
         private int _highlightedIndex;
+        public int HighlightedIndex => _highlightedIndex;
 
         #region 事件
 

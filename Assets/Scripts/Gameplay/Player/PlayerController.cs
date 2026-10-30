@@ -1,8 +1,10 @@
 using Framework.Bootstrap;
 using Framework.Services.Input;
+using Framework.Services.UI;
 using Gameplay.Player.Act;
 using Gameplay.Player.Input;
 using Gameplay.Player.Interaction;
+using Gameplay.UI;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -23,8 +25,11 @@ namespace Gameplay.Player
         private PlayerMotor _motor;
         private PlayerGlasses _glasses;
         private PlayerVision _vision;
+        private PlayerEnergy _energy;
         
         public PerformanceMode PerformanceMode => _performanceMode;
+        public PlayerInteractor Interactor => _interactor;
+        public PlayerEnergy Energy => _energy;
 
         [SerializeField] private PlayerConfig playerConfig;
         [SerializeField] private CharacterController controller;
@@ -33,7 +38,8 @@ namespace Gameplay.Player
         [SerializeField] private float lookSensitivity = 0.15f;
         [SerializeField] private bool invertY;
 
-        [Header("交互")]
+        [Header("交互")] 
+        [SerializeField] private Transform interactOrigin;
         [SerializeField] private LayerMask interactableLayer;
         [SerializeField] private float interactRadius = 1f;
 
@@ -71,16 +77,17 @@ namespace Gameplay.Player
 
             _cameraRig = new PlayerCameraRig(
                 _inputReader, orbitalFollow, mainCamera.transform, lookSensitivity, invertY);
-
             _motor = new PlayerMotor(
                 controller, _inputReader, playerConfig, mainCamera.transform);
-
-            var context = new PlayerContext(transform);
+            _energy = new PlayerEnergy(
+                playerConfig.InitialEnergy, playerConfig.EnergyCapacity);
+            
+            var context = new PlayerContext(transform, _energy);
             _interactor = new PlayerInteractor(
-                transform, context, interactableLayer, interactRadius);
+                interactOrigin, context, interactableLayer, interactRadius);
 
             _glasses = new PlayerGlasses(_inputReader);
-
+            
             if (selfLight != null && cinemachineCamera != null)
             {
                 _vision = new PlayerVision(
@@ -96,7 +103,13 @@ namespace Gameplay.Player
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
-
+        
+        private void Start()
+        {
+            var ui = GameRoot.Instance.Services.Get<IUIService>();
+            ui.OpenPanel<HUD>(this);
+        }
+        
         private void Update()
         {
             _inputReader.Poll();

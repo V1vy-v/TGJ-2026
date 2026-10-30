@@ -5,7 +5,7 @@ using Gameplay.Interaction.Interface;
 using Gameplay.Player.Interaction;
 using UnityEngine;
 
-namespace Gameplay.Interaction.Puzzle
+namespace Gameplay.Interaction.Puzzle.SpeakerChain
 {
     public enum SpeakerAxis
     {
@@ -109,13 +109,6 @@ namespace Gameplay.Interaction.Puzzle
         private Quaternion CalculateBaseRotation()
         {
             Vector3 direction = defaultTarget.position - transform.position;
-
-            if (axis == SpeakerAxis.Horizontal)
-                direction.y = 0f;
-
-            if (direction.sqrMagnitude < 0.0001f)
-                return transform.rotation;
-
             return Quaternion.LookRotation(direction.normalized, Vector3.up);
         }
 
@@ -162,7 +155,7 @@ namespace Gameplay.Interaction.Puzzle
             }
         }
 
-        public bool TryTurn(SpeakerTurn turn)
+        private bool TryTurn(SpeakerTurn turn)
         {
             if (!isAdjustable || _rotating || _locked)
                 return false;
@@ -204,8 +197,12 @@ namespace Gameplay.Interaction.Puzzle
 
             _rotating = true;
 
-            _rotateRoutine = StartCoroutine(
-                RotateRoutine(_baseRotation * GetStepRotation(_step)));
+            Quaternion targetRotation =
+                axis == SpeakerAxis.Horizontal
+                    ? _baseRotation * GetStepRotation(_step)
+                    : GetStepRotation(_step) * _baseRotation;
+            
+            _rotateRoutine = StartCoroutine(RotateRoutine(targetRotation));
         }
 
         private IEnumerator RotateRoutine(Quaternion targetRotation)

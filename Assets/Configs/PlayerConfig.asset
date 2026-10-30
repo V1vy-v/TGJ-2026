@@ -16,3 +16,5 @@ MonoBehaviour:
   turnSpeed: 720
   gravity: 20
   jumpHeight: 0.5
+  initialEnergy: 3
+  energyCapacity: 6
