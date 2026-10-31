@@ -4,6 +4,8 @@ using Framework.Services.UI;
 using Gameplay.Player.Act;
 using Gameplay.Player.Input;
 using Gameplay.Player.Interaction;
+using Gameplay.Player.Pulse;
+using Gameplay.Rendering;
 using Gameplay.UI;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -26,6 +28,7 @@ namespace Gameplay.Player
         private PlayerGlasses _glasses;
         private PlayerVision _vision;
         private PlayerEnergy _energy;
+        private PlayerPulse _pulse;
         
         public PerformanceMode PerformanceMode => _performanceMode;
         public PlayerInteractor Interactor => _interactor;
@@ -44,24 +47,11 @@ namespace Gameplay.Player
         [SerializeField] private float interactRadius = 1f;
 
         [Header("视野")]
+        [SerializeField] private GameObject mazeVolume;
         [SerializeField] private Light selfLight;
         [SerializeField] private CinemachineCamera cinemachineCamera;
-        [SerializeField] private VisionSettings visionSettings = new VisionSettings
-        {
-            normalFov = 60f,
-            blindFov = 40f,
-            normalRadius = 2.5f,
-            blindRadius = 1.2f,
-            normalLightIntensity = 0f,
-            blindLightIntensity = 1.5f,
-            normalLightRange = 0.1f,
-            blindLightRange = 2f,
-            normalAmbient = 1f,
-            blindAmbient = 0.05f,
-            normalFogDensity = 0.01f,
-            blindFogDensity = 0.15f,
-            transitionDuration = 0.3f,
-        };
+        
+        private bool _inMaze;
 
         #endregion
 
@@ -87,11 +77,11 @@ namespace Gameplay.Player
                 interactOrigin, context, interactableLayer, interactRadius);
 
             _glasses = new PlayerGlasses(_inputReader);
-            
+            _pulse = new PlayerPulse(transform, playerConfig.Pulse);
             if (selfLight != null && cinemachineCamera != null)
             {
                 _vision = new PlayerVision(
-                    selfLight, mainCamera, cinemachineCamera, orbitalFollow, _glasses, visionSettings);
+                    selfLight, cinemachineCamera, orbitalFollow, _glasses, playerConfig.Vision);
             }
             else
             {
@@ -99,6 +89,7 @@ namespace Gameplay.Player
             }
 
             _inputReader.InteractPressed += OnInteractPressed;
+            _inputReader.PulsePressed += OnPulsePressed;
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -134,13 +125,51 @@ namespace Gameplay.Player
 
         #endregion
 
+        #region 外部方法
+
+        public void EnterMaze()
+        {
+            if (_inMaze) return;
+            _inMaze = true;
+
+            _glasses.SetWearing(false);
+            _glasses.ToggleEnabled = false;
+
+            if (mazeVolume != null)
+                mazeVolume.SetActive(true);
+
+            MazeBlackoutFeature.SetEnabled(true);
+        }
+
+        public void ExitMaze()
+        {
+            if (!_inMaze) return;
+            _inMaze = false;
+
+            _glasses.ToggleEnabled = true;
+            _glasses.SetWearing(true);
+
+            if (mazeVolume != null)
+                mazeVolume.SetActive(false);
+            
+            ScanRendererFeature.Instance?.StopPulse();
+            MazeBlackoutFeature.SetEnabled(false);
+        }
+
+        #endregion
+
         #region 内部实现
 
         private void OnInteractPressed()
         {
             _interactor.TryInteract();
         }
-
+        
+        private void OnPulsePressed()
+        {
+            if (!_inMaze) return;
+            _pulse.Fire();
+        }
         #endregion
     }
 }

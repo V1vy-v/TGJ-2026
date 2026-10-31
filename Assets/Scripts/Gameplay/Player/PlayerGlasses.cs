@@ -8,6 +8,8 @@ namespace Gameplay.Player
         private readonly PlayerInputReader _reader;
 
         public bool IsWearing { get; private set; } = true;
+        
+        public bool ToggleEnabled { get; set; } = true;
         public event Action<bool> Changed;
 
         public PlayerGlasses(PlayerInputReader reader)
@@ -18,13 +20,20 @@ namespace Gameplay.Player
 
         public void Toggle()
         {
-            IsWearing = !IsWearing;
-            Changed?.Invoke(IsWearing);
+            if (!ToggleEnabled) return;
+            SetWearing(!IsWearing);
         }
 
         public void Dispose()
         {
             _reader.GlassesPressed -= Toggle;
+        }
+
+        public void SetWearing(bool wearing)
+        {
+            if (IsWearing == wearing) return;
+            IsWearing = wearing;
+            Changed?.Invoke(IsWearing);
         }
     }
 }

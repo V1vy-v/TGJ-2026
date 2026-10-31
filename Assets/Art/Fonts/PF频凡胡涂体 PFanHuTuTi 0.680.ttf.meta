@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0d31a36ae8534d645a1032a0abcb61fa
+guid: d09e60cccfa43c740b50ddc3a43e2d00
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - LogoSC Unbounded Sans
+  - PFanHuTuTi
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

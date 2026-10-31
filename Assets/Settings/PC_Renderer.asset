@@ -14,11 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ScanRendererFeature
   m_Active: 1
   scanMaterial: {fileID: 2100000, guid: 28848e0b5cdf94e4c852763c8d7b67b0, type: 2}
-  injectionPoint: 500
+  injectionPoint: 600
   renderInSceneView: 1
   scanOrigin: {fileID: 0}
   pulseDuration: 1.2
   previewContinuous: 0
+--- !u!114 &-1602867233535137207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e77ff921c87e0e4a9a9c6241a1c7316, type: 3}
+  m_Name: MazeBlackoutFeature
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Rendering.MazeBlackoutFeature
+  m_Active: 1
+  blackoutMaterial: {fileID: 2100000, guid: 372c8c25b83f3e144b328887054ccbc7, type: 2}
+  injectionPoint: 500
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46,7 +61,8 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: 7833122117494664109}
   - {fileID: -4722715999678291504}
-  m_RendererFeatureMap: ad6b866f10d7b46cd0211f00d28a75be
+  - {fileID: -1602867233535137207}
+  m_RendererFeatureMap: ad6b866f10d7b46cd0211f00d28a75be496a0653be78c1e9
   m_UseNativeRenderPass: 1
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   m_AssetVersion: 3

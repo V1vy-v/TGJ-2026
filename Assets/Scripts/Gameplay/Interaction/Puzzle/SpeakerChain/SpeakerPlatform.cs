@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Gameplay.Interaction.Puzzle.SpeakerChain
 {
     /// <summary>
-    /// 电梯：在 up / down 两个世界 Y 之间往返，可携带站在上面的角色。
+    /// 升降台：被 Puzzle 一次性激活后，在 up / down 之间循环，可携带乘客。
     /// </summary>
     public class SpeakerPlatform : MonoBehaviour
     {
@@ -12,9 +12,6 @@ namespace Gameplay.Interaction.Puzzle.SpeakerChain
         [SerializeField] private float down;
         [SerializeField] private float up;
         [SerializeField] private float speed = 1f;
-
-        [Header("初始状态")]
-        [SerializeField] private bool startLocked = true;
 
         [Header("乘客检测")]
         [SerializeField] private Vector3 passengerCheckSize = new(3f, 0.4f, 3f);
@@ -24,22 +21,18 @@ namespace Gameplay.Interaction.Puzzle.SpeakerChain
         private readonly Collider[] _hits = new Collider[8];
         private readonly List<CharacterController> _passengers = new();
 
-        private bool _locked;
+        private bool _unlocked;
         private int _direction = 1;
-
-        private void Awake()
-        {
-            _locked = startLocked;
-        }
 
         public void Unlock()
         {
-            _locked = false;
+            _unlocked = true;
         }
 
         private void Update()
         {
-            if (_locked) return;
+            if (!_unlocked)
+                return;
 
             float targetY = _direction > 0 ? up : down;
             Vector3 before = transform.position;

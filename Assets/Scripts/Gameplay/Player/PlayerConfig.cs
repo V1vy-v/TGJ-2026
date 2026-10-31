@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Gameplay.Player.Pulse;
+using UnityEngine;
 
 namespace Gameplay.Player
 {
@@ -6,14 +7,20 @@ namespace Gameplay.Player
     public class PlayerConfig : ScriptableObject
     {
         [Header("物理配置")]
-        [SerializeField] [Header("移动")] private float moveSpeed = 10;
-        [SerializeField] [Header("转身")] private float turnSpeed = 720;
-        [SerializeField] [Header("重力")] private float gravity = 20f;
-        [SerializeField] [Header("跳跃")] private float jumpHeight = 0.15f;
+        [SerializeField] private float moveSpeed = 10;
+        [SerializeField] private float turnSpeed = 720;
+        [SerializeField] private float gravity = 20f;
+        [SerializeField] private float jumpHeight = 0.15f;
         
         [Header("能量")]
-        [SerializeField] [Header("初始值")] private int initialEnergy = 0;
-        [SerializeField] [Header("上限")] private int energyCapacity = 6;
+        [SerializeField] private int initialEnergy = 0;
+        [SerializeField] private int energyCapacity = 6;
+        
+        [Header("视野")]
+        [SerializeField] private VisionSettings visionSettings;
+
+        [Header("脉冲")] 
+        [SerializeField] private PulseSettings pulseSettings = new();
         
         public float MoveSpeed => moveSpeed;
         public float TurnSpeed => turnSpeed;
@@ -21,5 +28,7 @@ namespace Gameplay.Player
         public float JumpHeight => jumpHeight;
         public int InitialEnergy => initialEnergy;
         public int EnergyCapacity => energyCapacity;
+        public VisionSettings Vision => visionSettings;
+        public PulseSettings Pulse => pulseSettings;
     }
 }

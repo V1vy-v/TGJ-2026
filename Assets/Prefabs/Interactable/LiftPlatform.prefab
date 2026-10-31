@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1126066152639245476}
   - component: {fileID: 5163132882487730526}
   - component: {fileID: 5135228345057093816}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LiftPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}

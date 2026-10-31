@@ -154,7 +154,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1442727166235914401}
-  - component: {fileID: 4768856725720701149}
   - component: {fileID: 5271584763557942997}
   m_Layer: 8
   m_Name: Interactable
@@ -178,18 +177,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1117345022868196510}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4768856725720701149
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9056903199313325272}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01bb3c81205f1a84b9e700113ec11f90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Interaction.Items.TestSphere
 --- !u!65 &5271584763557942997
 BoxCollider:
   m_ObjectHideFlags: 0

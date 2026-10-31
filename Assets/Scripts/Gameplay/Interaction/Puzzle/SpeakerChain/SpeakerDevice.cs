@@ -9,8 +9,8 @@ namespace Gameplay.Interaction.Puzzle.SpeakerChain
 {
     public enum SpeakerAxis
     {
-        Horizontal, // 左右
-        Vertical,   // 上下
+        Horizontal,
+        Vertical,
     }
 
     public enum SpeakerTurn
@@ -22,15 +22,17 @@ namespace Gameplay.Interaction.Puzzle.SpeakerChain
     }
 
     /// <summary>
-    /// 喇叭：以初始朝向为基准，按步进偏移旋转。
-    /// 只负责自身状态；四个转向作为交互选项交给 UI 选择。
+    /// 喇叭：按 step 旋转，只有通电时发射射线。
+    /// 射线命中下一个喇叭会让它通电；命中最终目标会通知 SpeakerTarget。
     /// </summary>
     public class SpeakerDevice : InteractableBehaviour
     {
+        #region 状态
+
         [Header("旋转")]
         [Tooltip("旋转速度，单位：度/秒")]
         [SerializeField] private float rotateSpeed = 180f;
-        
+
         [Header("步进")]
         [Tooltip("旋转轴：Horizontal 左右，Vertical 上下")]
         [SerializeField] private SpeakerAxis axis = SpeakerAxis.Horizontal;
@@ -43,12 +45,12 @@ namespace Gameplay.Interaction.Puzzle.SpeakerChain
 
         [Tooltip("最大 step")]
         [SerializeField] private int maxStep = 1;
-        
-        [Header("对准")]
-        [Tooltip("alignedStep 对应的目标方向；留空则使用场景里当前的朝向")]
-        [SerializeField] private Transform defaultTarget;
 
-        [Tooltip("对准的 step；defaultTarget 就是这一步的方向")]
+        [Header("对准")]
+        [Tooltip("由 SpeakerChainPuzzle 自动设置；也可手动指定")]
+        [SerializeField] private Transform aimTarget;
+
+        [Tooltip("对准的 step；aimTarget 就是这一步的方向")]
         [SerializeField] private int alignedStep;
 
         [Header("初始状态")]
@@ -56,75 +58,109 @@ namespace Gameplay.Interaction.Puzzle.SpeakerChain
         [SerializeField] private int initialStep = -1;
 
         [Header("交互")]
-        [Tooltip("不可调喇叭：固定朝向，不响应交互，也不参与谜题判定")]
+        [Tooltip("不可调喇叭：固定朝向，不响应交互")]
         [SerializeField] private bool isAdjustable = true;
+
+        [Header("射线")]
+        [Tooltip("射线最大长度")]
+        [SerializeField] private float beamRange = 20f;
+
+        [Tooltip("射线会命中的层：墙、石台、喇叭、最终目标")]
+        [SerializeField] private LayerMask beamMask;
+
+        [Tooltip("光束渲染器")]
+        [SerializeField] private LineRenderer beamRenderer;
+
+        [Tooltip("未命中目标时的颜色")]
+        [SerializeField] private Color blockColor;
+
+        [Tooltip("命中目标时的颜色")]
+        [SerializeField] private Color alignColor;
 
         private Quaternion _baseRotation;
         private int _step;
         private bool _rotating;
+        private bool _powered;
         private bool _locked;
         private Coroutine _rotateRoutine;
+        private SpeakerDevice _poweredSpeaker;
+        private SpeakerTarget _hitReceiver;
+        private readonly RaycastHit[] _hits = new RaycastHit[16];
 
         public bool IsAdjustable => isAdjustable;
+        public bool IsPowered => _powered;
         public bool IsAligned { get; private set; }
+        public bool IsConnected { get; private set; }
         public int Step => _step;
 
         public event Action<int> StepChanged;
         public event Action<SpeakerTurn> TurnRejected;
 
+        #endregion
+
+        #region 生命周期
+
         private void Awake()
         {
-            // 初始化基准方向和初始方向
-            _baseRotation = defaultTarget != null
-                ? CalculateBaseRotation()
-                : transform.rotation;
-            
+            _baseRotation = CalculateBaseRotation();
+
             if (!isAdjustable)
             {
-                _step = Mathf.Clamp(alignedStep, minStep, maxStep);
+                _step = alignedStep;
                 transform.rotation = _baseRotation;
                 IsAligned = true;
+                SetBeamVisible(false);
                 return;
             }
 
             _step = Mathf.Clamp(initialStep, minStep, maxStep);
-
-            if (alignedStep < minStep || alignedStep > maxStep)
-            {
-                Debug.LogWarning(
-                    $"[SpeakerDevice] {name} 的 alignedStep 不在 step 范围内，永远无法对准", this);
-            }
-
-            if (_step == alignedStep)
-            {
-                Debug.LogWarning(
-                    $"[SpeakerDevice] {name} 的 initialStep 等于 alignedStep，开局即对准", this);
-            }
-
-            transform.rotation = _baseRotation * GetStepRotation(_step);
+            transform.rotation = GetTargetRotation(_step);
 
             IsAligned = _step == alignedStep;
+            SetBeamVisible(false);
         }
 
-        private Quaternion CalculateBaseRotation()
+        private void OnDisable()
         {
-            Vector3 direction = defaultTarget.position - transform.position;
-            return Quaternion.LookRotation(direction.normalized, Vector3.up);
+            ClearBeam();
         }
 
-        private Quaternion GetStepRotation(int step)
+        private void Update()
         {
-            int delta = step - alignedStep;
-            float angle = delta * offsetPerStep;
+            if (!_powered)
+            {
+                ClearBeam();
+                return;
+            }
 
-            return axis == SpeakerAxis.Horizontal
-                ? Quaternion.Euler(0f, angle, 0f)
-                : Quaternion.Euler(-angle, 0f, 0f);
+            UpdateBeam();
         }
 
-        public override bool CanInteract(PlayerContext ctx)
+        #endregion
+
+        #region 对外接口
+
+        public void SetAimTarget(Transform target)
         {
-            return isAdjustable && !_rotating && !_locked;
+            aimTarget = target;
+            _baseRotation = CalculateBaseRotation();
+            transform.rotation = isAdjustable ? GetTargetRotation(_step) : _baseRotation;
+        }
+
+        public void SetPowered(bool powered)
+        {
+            if (_powered == powered)
+                return;
+
+            _powered = powered;
+
+            if (!powered)
+            {
+                ClearBeam();
+                return;
+            }
+
+            SetBeamVisible(true);
         }
 
         public void PuzzleDone()
@@ -132,12 +168,17 @@ namespace Gameplay.Interaction.Puzzle.SpeakerChain
             _locked = true;
         }
 
+        public override bool CanInteract(PlayerContext ctx)
+        {
+            return isAdjustable && !_rotating && !_locked;
+        }
+
         public override IReadOnlyList<InteractionOption> GetOptions(PlayerContext ctx)
         {
             if (!isAdjustable || _locked)
                 return Array.Empty<InteractionOption>();
 
-            if(axis == SpeakerAxis.Horizontal)
+            if (axis == SpeakerAxis.Horizontal)
             {
                 return new[]
                 {
@@ -145,14 +186,38 @@ namespace Gameplay.Interaction.Puzzle.SpeakerChain
                     Option("向右转", _ => TryTurn(SpeakerTurn.Right)),
                 };
             }
-            else
+
+            return new[]
             {
-                return new[]
-                {
-                    Option("向上转", _ => TryTurn(SpeakerTurn.Up)),
-                    Option("向下转", _ => TryTurn(SpeakerTurn.Down)),
-                };
-            }
+                Option("向上转", _ => TryTurn(SpeakerTurn.Up)),
+                Option("向下转", _ => TryTurn(SpeakerTurn.Down)),
+            };
+        }
+
+        #endregion
+
+        #region 内部实现
+
+        private Quaternion CalculateBaseRotation()
+        {
+            if (aimTarget == null)
+                return transform.rotation;
+
+            Vector3 direction = aimTarget.position - transform.position;
+
+            if (direction.sqrMagnitude < 0.0001f)
+                return transform.rotation;
+
+            return Quaternion.LookRotation(direction.normalized, Vector3.up);
+        }
+
+        private Quaternion GetTargetRotation(int step)
+        {
+            float angle = (step - alignedStep) * offsetPerStep;
+
+            return axis == SpeakerAxis.Horizontal
+                ? Quaternion.Euler(0f, angle, 0f) * _baseRotation
+                : _baseRotation * Quaternion.Euler(-angle, 0f, 0f);
         }
 
         private bool TryTurn(SpeakerTurn turn)
@@ -196,13 +261,7 @@ namespace Gameplay.Interaction.Puzzle.SpeakerChain
                 StopCoroutine(_rotateRoutine);
 
             _rotating = true;
-
-            Quaternion targetRotation =
-                axis == SpeakerAxis.Horizontal
-                    ? _baseRotation * GetStepRotation(_step)
-                    : GetStepRotation(_step) * _baseRotation;
-            
-            _rotateRoutine = StartCoroutine(RotateRoutine(targetRotation));
+            _rotateRoutine = StartCoroutine(RotateRoutine(GetTargetRotation(_step)));
         }
 
         private IEnumerator RotateRoutine(Quaternion targetRotation)
@@ -225,10 +284,117 @@ namespace Gameplay.Interaction.Puzzle.SpeakerChain
             StepChanged?.Invoke(_step);
         }
 
+        private void UpdateBeam()
+        {
+            if (beamRenderer == null)
+                return;
+
+            Vector3 origin = transform.position;
+            Vector3 direction = transform.forward;
+
+            int count = Physics.RaycastNonAlloc(
+                origin,
+                direction,
+                _hits,
+                beamRange,
+                beamMask,
+                QueryTriggerInteraction.Ignore);
+
+            float nearestDistance = beamRange;
+            SpeakerDevice hitSpeaker = null;
+            SpeakerTarget hitReceiver = null;
+
+            for (int i = 0; i < count; i++)
+            {
+                RaycastHit hit = _hits[i];
+
+                if (hit.collider.GetComponentInParent<SpeakerDevice>() == this)
+                    continue;
+
+                if (hit.distance >= nearestDistance)
+                    continue;
+
+                nearestDistance = hit.distance;
+                hitSpeaker = hit.collider.GetComponentInParent<SpeakerDevice>();
+                hitReceiver = hit.collider.GetComponentInParent<SpeakerTarget>();
+            }
+
+            bool aligned = IsAligned;
+
+            if (!aligned)
+            {
+                hitSpeaker = null;
+                hitReceiver = null;
+            }
+
+            if (hitSpeaker != null && !IsAimTarget(hitSpeaker.transform))
+                hitSpeaker = null;
+
+            if (hitReceiver != null && !IsAimTarget(hitReceiver.transform))
+                hitReceiver = null;
+
+            SetPoweredSpeaker(hitSpeaker);
+            SetHitReceiver(hitReceiver);
+
+            IsConnected = hitSpeaker != null || hitReceiver != null;
+
+            Vector3 end = origin + direction * nearestDistance;
+
+            beamRenderer.SetPosition(0, origin);
+            beamRenderer.SetPosition(1, end);
+            beamRenderer.startColor = beamRenderer.endColor =
+                IsConnected ? alignColor : blockColor;
+        }
+
+        private bool IsAimTarget(Transform hit)
+        {
+            if (aimTarget == null || hit == null)
+                return false;
+
+            return hit == aimTarget || hit.IsChildOf(aimTarget);
+        }
+
+        private void SetPoweredSpeaker(SpeakerDevice newSpeaker)
+        {
+            if (_poweredSpeaker == newSpeaker)
+                return;
+
+            _poweredSpeaker?.SetPowered(false);
+            _poweredSpeaker = newSpeaker;
+            _poweredSpeaker?.SetPowered(true);
+        }
+
+        private void SetHitReceiver(SpeakerTarget newReceiver)
+        {
+            if (_hitReceiver == newReceiver)
+                return;
+
+            _hitReceiver?.SetHit(false);
+            _hitReceiver = newReceiver;
+            _hitReceiver?.SetHit(true);
+        }
+
+        private void ClearBeam()
+        {
+            SetPoweredSpeaker(null);
+            SetHitReceiver(null);
+
+            IsConnected = false;
+            SetBeamVisible(false);
+        }
+
+        private void SetBeamVisible(bool visible)
+        {
+            if (beamRenderer != null)
+                beamRenderer.enabled = visible;
+        }
+
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawRay(transform.position, transform.forward * 3f);
         }
+
+        #endregion
     }
 }

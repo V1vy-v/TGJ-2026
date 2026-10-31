@@ -1,78 +1,62 @@
-﻿using System;
+using System;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace Gameplay.Player
 {
     [Serializable]
     public struct VisionSettings
     {
+        [Tooltip("戴镜时的相机视野角度。")]
         public float normalFov;
+
+        [Tooltip("摘镜时的相机视野角度；通常比戴镜更窄。")]
         public float blindFov;
+
+        [Tooltip("戴镜时第三人称相机与角色的距离。")]
         public float normalRadius;
+
+        [Tooltip("摘镜时第三人称相机与角色的距离；通常更近。")]
         public float blindRadius;
+
+        [Tooltip("戴镜时玩家自身光强度；0 表示关闭。")]
         public float normalLightIntensity;
+
+        [Tooltip("摘镜时玩家自身光强度；迷宫内要纯黑时设为 0。")]
         public float blindLightIntensity;
+
+        [Tooltip("戴镜时自身光的照射范围（米）。")]
         public float normalLightRange;
+
+        [Tooltip("摘镜时自身光的照射范围（米）。")]
         public float blindLightRange;
-        public float normalAmbient;
-        public float blindAmbient;
-        public float normalFogDensity;
-        public float blindFogDensity;
+
+        [Tooltip("戴镜/摘镜过渡的持续时间（秒）。")]
         public float transitionDuration;
     }
 
+    /// <summary>
+    /// 只负责眼镜带来的表现变化：相机 FOV、相机距离和玩家自身光。
+    /// 环境光、雾、场景灯光交给其它系统。
+    /// </summary>
     public sealed class PlayerVision : IDisposable
     {
         private readonly Light _selfLight;
-        private readonly Camera _mainCamera;
         private readonly CinemachineCamera _camera;
         private readonly CinemachineOrbitalFollow _orbital;
         private readonly PlayerGlasses _glasses;
         private readonly VisionSettings _settings;
 
-        private readonly Light[] _sceneLights;
-        private readonly float[] _sceneLightIntensities;
-
-        private readonly CameraClearFlags _originalClearFlags;
-        private readonly Color _originalBackground;
-        private readonly AmbientMode _originalAmbientMode;
-        private readonly Color _originalAmbientLight;
-        private readonly float _originalAmbientIntensity;
-        private readonly float _originalFogDensity;
-        private readonly Color _originalFogColor;
-
         private float _blend;
 
-        public PlayerVision(Light selfLight, Camera mainCamera, CinemachineCamera camera,
+        public PlayerVision(Light selfLight, CinemachineCamera camera,
             CinemachineOrbitalFollow orbital, PlayerGlasses glasses, VisionSettings settings)
         {
             _selfLight = selfLight;
-            _mainCamera = mainCamera;
             _camera = camera;
             _orbital = orbital;
             _glasses = glasses;
             _settings = settings;
-
-            _sceneLights = UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None);
-            _sceneLightIntensities = new float[_sceneLights.Length];
-
-            for (int i = 0; i < _sceneLights.Length; i++)
-            {
-                _sceneLightIntensities[i] = _sceneLights[i] == _selfLight
-                    ? 0f
-                    : _sceneLights[i].intensity;
-            }
-
-            _originalClearFlags = _mainCamera.clearFlags;
-            _originalBackground = _mainCamera.backgroundColor;
-
-            _originalAmbientMode = RenderSettings.ambientMode;
-            _originalAmbientLight = RenderSettings.ambientLight;
-            _originalAmbientIntensity = RenderSettings.ambientIntensity;
-            _originalFogDensity = RenderSettings.fogDensity;
-            _originalFogColor = RenderSettings.fogColor;
 
             Apply(0f);
         }
@@ -93,53 +77,35 @@ namespace Gameplay.Player
 
         private void Apply(float t)
         {
-            var lens = _camera.Lens;
-            lens.FieldOfView = Mathf.Lerp(_settings.normalFov, _settings.blindFov, t);
-            _camera.Lens = lens;
+            if (_camera != null)
+            {
+                var lens = _camera.Lens;
+                lens.FieldOfView = Mathf.Lerp(_settings.normalFov, _settings.blindFov, t);
+                _camera.Lens = lens;
+            }
 
-            _orbital.Radius = Mathf.Lerp(_settings.normalRadius, _settings.blindRadius, t);
+            if (_orbital != null)
+            {
+                _orbital.Radius = Mathf.Lerp(
+                    _settings.normalRadius,
+                    _settings.blindRadius,
+                    t);
+            }
+
+            if (_selfLight == null)
+                return;
 
             _selfLight.intensity = Mathf.Lerp(
-                _settings.normalLightIntensity, _settings.blindLightIntensity, t);
-            _selfLight.range = Mathf.Lerp(
-                _settings.normalLightRange, _settings.blindLightRange, t);
-            _selfLight.enabled = _selfLight.intensity > 0.001f;
-
-            for (int i = 0; i < _sceneLights.Length; i++)
-            {
-                if (_sceneLights[i] == _selfLight) continue;
-                if (_sceneLights[i] == null) continue;
-
-                _sceneLights[i].intensity = Mathf.Lerp(_sceneLightIntensities[i], 0f, t);
-            }
-
-            if (t > 0.5f)
-            {
-                _mainCamera.clearFlags = CameraClearFlags.SolidColor;
-                _mainCamera.backgroundColor = Color.black;
-
-                RenderSettings.ambientMode = AmbientMode.Flat;
-                RenderSettings.ambientLight = Color.black;
-                RenderSettings.ambientIntensity = 0f;
-            }
-            else
-            {
-                _mainCamera.clearFlags = _originalClearFlags;
-                _mainCamera.backgroundColor = _originalBackground;
-
-                RenderSettings.ambientMode = _originalAmbientMode;
-                RenderSettings.ambientLight = _originalAmbientLight;
-                RenderSettings.ambientIntensity = Mathf.Lerp(
-                    _originalAmbientIntensity, _settings.blindAmbient, t);
-            }
-
-            RenderSettings.fog = true;
-            RenderSettings.fogMode = FogMode.ExponentialSquared;
-            RenderSettings.fogColor = Color.Lerp(_originalFogColor, Color.black, t);
-            RenderSettings.fogDensity = Mathf.Lerp(
-                Mathf.Max(_originalFogDensity, _settings.normalFogDensity),
-                _settings.blindFogDensity,
+                _settings.normalLightIntensity,
+                _settings.blindLightIntensity,
                 t);
+
+            _selfLight.range = Mathf.Lerp(
+                _settings.normalLightRange,
+                _settings.blindLightRange,
+                t);
+
+            _selfLight.enabled = _selfLight.intensity > 0.001f;
         }
     }
 }
