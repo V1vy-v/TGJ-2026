@@ -16,7 +16,7 @@ MonoBehaviour:
   turnSpeed: 1440
   gravity: 20
   jumpHeight: 0.5
-  initialEnergy: 3
+  initialEnergy: 4
   energyCapacity: 6
   visionSettings:
     normalFov: 60
