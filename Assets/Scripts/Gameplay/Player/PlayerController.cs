@@ -74,6 +74,7 @@ namespace Gameplay.Player
         [SerializeField] private CinemachineCamera cinemachineCamera;
 
         private bool _inMaze;
+        private bool _footstepActive;
         
         #endregion
 
@@ -142,12 +143,14 @@ namespace Gameplay.Player
             // 暂停时不再驱动相机和移动，避免暂停界面下方镜头继续响应鼠标。
             if (Time.timeScale <= 0f)
             {
+                SetFootstep(false);
                 _animator?.Tick(false);
                 return;
             }
 
             if (_dialogue.IsActive)
             {
+                SetFootstep(false);
                 _animator?.Tick(false);
                 _vision?.Tick(Time.deltaTime);
                 return;
@@ -156,12 +159,14 @@ namespace Gameplay.Player
             _cameraRig.Tick();
             _motor.Tick(Time.deltaTime);
             _interactor.Tick(_inputReader.ScrollValue);
+            SetFootstep(_inputReader.MoveValue.sqrMagnitude > 0.01f);
             _animator?.Tick(_inputReader.MoveValue.sqrMagnitude > 0.01f);
             _vision?.Tick(Time.deltaTime);
         }
 
         private void OnDestroy()
         {
+            SetFootstep(false);
             _inputReader.InteractPressed -= OnInteractPressed;
             _dialogue.Ended -= OnDialogueEnded;
             _dialogue.LineChanged -= OnDialogueLineChanged;
@@ -188,7 +193,19 @@ namespace Gameplay.Player
 
         public void PlayFootstep()
         {
-            _gameAudio?.PlayFootstep();
+            // 动画事件兼容入口；脚步声由 Update 中的移动状态统一控制。
+        }
+
+        private void SetFootstep(bool active)
+        {
+            if (_footstepActive == active)
+                return;
+
+            _footstepActive = active;
+            if (active)
+                _gameAudio?.StartFootstep();
+            else
+                _gameAudio?.StopFootstep();
         }
 
         /// <summary>物品被拾取时由交互物调用，播放一次拾取动作。</summary>

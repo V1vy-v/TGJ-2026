@@ -1,7 +1,6 @@
 using Framework.Bootstrap;
 using Framework.Services.SceneFlow;
 using Framework.Services.UI;
-using Gameplay.Audio;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +16,7 @@ namespace Gameplay.UI
 
         [SerializeField] private Button startBtn;
         [SerializeField] private Button settingsBtn;
+        [SerializeField] private Button aboutBtn;
         [SerializeField] private Button quitBtn;
 
         #endregion
@@ -24,7 +24,6 @@ namespace Gameplay.UI
         #region 状态
 
         private bool _starting;
-        private IGameAudio _audio;
 
         #endregion
 
@@ -33,8 +32,6 @@ namespace Gameplay.UI
         protected override void OnCreate()
         {
             base.OnCreate();
-
-            _audio = GameRoot.Instance.Services.TryGet<IGameAudio>(out var audio) ? audio : null;
 
             if (startBtn != null)
                 startBtn.onClick.AddListener(OnStart);
@@ -47,12 +44,36 @@ namespace Gameplay.UI
                 settingsBtn.interactable = true;
                 settingsBtn.onClick.AddListener(OpenSettings);
             }
+
+            if (aboutBtn == null)
+                aboutBtn = FindButton("AboutBtn");
+
+            if (aboutBtn != null)
+            {
+                aboutBtn.interactable = true;
+                aboutBtn.onClick.AddListener(OpenAbout);
+            }
         }
 
         private void OpenSettings()
         {
-            _audio?.PlaySfx(GameSfx.UiClick);
             GameRoot.Instance.Services.Get<IUIService>().OpenOverlay<SettingPanel>();
+        }
+
+        private void OpenAbout()
+        {
+            GameRoot.Instance.Services.Get<IUIService>().OpenOverlay<AboutOverlay>();
+        }
+
+        private Button FindButton(string objectName)
+        {
+            foreach (var button in GetComponentsInChildren<Button>(true))
+            {
+                if (button.name == objectName)
+                    return button;
+            }
+
+            return null;
         }
 
         #endregion
@@ -64,8 +85,6 @@ namespace Gameplay.UI
             if (_starting) return;
             _starting = true;
 
-            _audio?.PlaySfx(GameSfx.UiClick);
-
             var ui = GameRoot.Instance.Services.Get<IUIService>();
             ui.Close<BeginScreen>();
 
@@ -75,7 +94,6 @@ namespace Gameplay.UI
 
         private void OnQuit()
         {
-            _audio?.PlaySfx(GameSfx.UiClick);
             Application.Quit();
         }
 

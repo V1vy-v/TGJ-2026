@@ -10,7 +10,7 @@ namespace Gameplay.Interaction.Items
 {
     public class MazeKey : InteractableBehaviour
     {
-        [SerializeField] private string pickupTipsKey = "tips.Pickup";
+        [SerializeField] private string pickupTipsKey = "tips.keyGet";
 
         private bool _taken;
 
@@ -22,7 +22,7 @@ namespace Gameplay.Interaction.Items
         public override IReadOnlyList<InteractionOption> GetOptions(PlayerContext ctx)
         {
             var localization = GameRoot.Instance.Services.Get<Framework.Services.Localization.ILocalizationService>();
-            return SingleOption(localization.GetText(pickupTipsKey), TryPickUp);
+            return SingleOption(localization.GetText("interaction.Pickup"), TryPickUp);
         }
 
         private bool TryPickUp(PlayerContext ctx)
@@ -32,6 +32,7 @@ namespace Gameplay.Interaction.Items
 
             _taken = true;
             ctx.Player.CollectMazeKey();
+            ctx.Player.NotifyItemPickedUp();
 
             if (GameRoot.Instance.Services.TryGet<IGameAudio>(out var audio))
                 audio.PlaySfx(GameSfx.Pickup);

@@ -13,10 +13,16 @@ namespace Gameplay.Rendering
             RenderPassEvent.AfterRenderingTransparents;
 
         private static bool _enabled;
+        private static bool _darkMaze;
 
         public static void SetEnabled(bool enabled)
         {
             _enabled = enabled;
+        }
+
+        public static void SetDarkMaze(bool dark)
+        {
+            _darkMaze = dark;
         }
 
         private BlackoutPass _pass;
@@ -40,6 +46,20 @@ namespace Gameplay.Rendering
                 return;
 
             _pass.renderPassEvent = injectionPoint;
+
+            if (_darkMaze)
+            {
+                blackoutMaterial.SetFloat("_Threshold", 0.72f);
+                blackoutMaterial.SetFloat("_Softness", 0.02f);
+                blackoutMaterial.SetFloat("_Boost", 0.35f);
+            }
+            else
+            {
+                blackoutMaterial.SetFloat("_Threshold", 0.30f);
+                blackoutMaterial.SetFloat("_Softness", 0.04f);
+                blackoutMaterial.SetFloat("_Boost", 1f);
+            }
+
             _pass.Setup(blackoutMaterial);
             renderer.EnqueuePass(_pass);
         }

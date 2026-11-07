@@ -5,7 +5,8 @@ using UnityEngine;
 namespace Gameplay.Audio
 {
     /// <summary>
-    /// 区域 BGM：放在道路/关卡区域上，玩家进入时切换音乐。
+    /// 区域音乐：玩家进入区域时切换 BGM，可选播放环境音。
+    /// GameScene 默认 BGM 为森林，其他区域用该组件覆盖。
     /// </summary>
     public class GameAudioZone : MonoBehaviour
     {

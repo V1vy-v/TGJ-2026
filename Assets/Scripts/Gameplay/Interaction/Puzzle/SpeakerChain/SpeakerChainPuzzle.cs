@@ -42,6 +42,10 @@ namespace Gameplay.Interaction.Puzzle.SpeakerChain
         [Tooltip("该谜题完成后才初始化本链条；用于共用喇叭的连续谜题")]
         [SerializeField] private SpeakerChainPuzzle prerequisite;
 
+        [Header("完成后的音频")]
+        [SerializeField] private bool playAmbientOnSolved;
+        [SerializeField] private GameSfx ambientOnSolved = GameSfx.Water;
+
         private bool _solved;
         private bool _initialized;
         private Coroutine _solveRoutine;
@@ -169,6 +173,8 @@ namespace Gameplay.Interaction.Puzzle.SpeakerChain
                 checkpoints.Unlock(checkpointOnSolved);
             }
             GameRoot.Instance.Services.Get<IGameAudio>().PlaySfx(GameSfx.SpeakerSolved);
+            if (playAmbientOnSolved)
+                GameRoot.Instance.Services.Get<IGameAudio>().PlayAmbient(ambientOnSolved);
             Gameplay.Flow.TipsTrigger.Show(solvedTipsKey);
         }
     }

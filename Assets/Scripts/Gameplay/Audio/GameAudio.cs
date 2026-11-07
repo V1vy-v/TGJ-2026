@@ -12,7 +12,8 @@ namespace Gameplay.Audio
         void PlaySfxAt(GameSfx sfx, Vector3 position, float volume = 1f);
         void PlayAmbient(GameSfx ambient, float fade = 0.5f);
         void StopAmbient(float fade = 0.5f);
-        void PlayFootstep();
+        void StartFootstep();
+        void StopFootstep();
     }
 
     /// <summary>
@@ -26,7 +27,7 @@ namespace Gameplay.Audio
 
         private IAudioService _audio;
         private ISceneFlowService _sceneFlow;
-        private int _footstepIndex;
+        private AudioSource _footstepSource;
 
         private void Awake()
         {
@@ -46,6 +47,11 @@ namespace Gameplay.Audio
                 return;
 
             GameRoot.Instance.Services.Register<IGameAudio>(this);
+
+            _footstepSource = gameObject.AddComponent<AudioSource>();
+            _footstepSource.playOnAwake = false;
+            _footstepSource.loop = true;
+            _footstepSource.spatialBlend = 0f;
 
             _sceneFlow.LoadCompleted += OnSceneLoaded;
         }
@@ -98,9 +104,26 @@ namespace Gameplay.Audio
             _audio?.StopAmbient(fade);
         }
 
-        public void PlayFootstep()
+        public void StartFootstep()
         {
-            PlaySfx(_footstepIndex++ % 2 == 0 ? GameSfx.Footstep : GameSfx.FootstepAlt);
+            if (_footstepSource == null || config == null)
+                return;
+
+            AudioClip clip = config.GetSfx(GameSfx.Footstep);
+            if (clip == null)
+                return;
+
+            if (_footstepSource.isPlaying && _footstepSource.clip == clip)
+                return;
+
+            _footstepSource.clip = clip;
+            _footstepSource.Play();
+        }
+
+        public void StopFootstep()
+        {
+            if (_footstepSource != null)
+                _footstepSource.Stop();
         }
 
         private void OnSceneLoaded(string sceneName)

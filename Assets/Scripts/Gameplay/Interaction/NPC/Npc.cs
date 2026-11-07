@@ -122,11 +122,10 @@ namespace Gameplay.Interaction.NPC
                     ? _quizPlayer.Energy
                     : ctx.Energy;
 
-                if (energy != null && energy.TryRecycle(1))
-                {
-                    if (GameRoot.Instance.Services.TryGet<IGameAudio>(out var audio))
-                        audio.PlaySfx(GameSfx.EnergyInject);
-                }
+                energy?.TryRecycle(1);
+
+                if (GameRoot.Instance.Services.TryGet<IGameAudio>(out var audio))
+                    audio.PlaySfx(GameSfx.EnergyInject);
 
                 TipsTrigger.Show(quizCorrectKey);
                 return true;

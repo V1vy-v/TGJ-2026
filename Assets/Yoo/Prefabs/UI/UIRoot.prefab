@@ -391,6 +391,7 @@ GameObject:
   - component: {fileID: 6788136025348504590}
   - component: {fileID: 683405821120010039}
   - component: {fileID: 2330284282542174338}
+  - component: {fileID: 3956007877731186691}
   m_Layer: 5
   m_Name: UIRoot
   m_TagString: Untagged
@@ -480,6 +481,18 @@ MonoBehaviour:
   popupLayer: {fileID: 4751209732048307774}
   overlayLayer: {fileID: 1767022100536876019}
   popupBlocker: {fileID: 661626237795805995}
+--- !u!114 &3956007877731186691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5267528224484321319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 295f5d711d45874449d0a9b23393cbde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.UI.UIButtonClickSfx
 --- !u!1 &5291515796738061627
 GameObject:
   m_ObjectHideFlags: 0

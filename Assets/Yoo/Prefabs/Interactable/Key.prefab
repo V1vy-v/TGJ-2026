@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c1e9ba17d3b89f43a3c05b3b31b75d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MazeKey
-  pickupTipsKey: interaction.Pickup
+  pickupTipsKey: tips.keyGet
 --- !u!1 &8205906931743410691
 GameObject:
   m_ObjectHideFlags: 0

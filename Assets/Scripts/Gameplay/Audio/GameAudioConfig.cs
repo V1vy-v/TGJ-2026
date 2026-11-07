@@ -6,20 +6,18 @@ namespace Gameplay.Audio
     {
         Ui,
         Forest,
-        ForestAlt,
+        Maze,
+        Stream,
         City,
-        Wrong,
-        WrongAlt,
+        GameOver,
     }
 
     public enum GameSfx
     {
         Pulse,
-        PulseAlt,
         Pickup,
         Water,
         Footstep,
-        FootstepAlt,
         UiClick,
         SpeakerSolved,
         EnergyInject,
@@ -28,21 +26,19 @@ namespace Gameplay.Audio
     [CreateAssetMenu(menuName = "Game/Audio Config", fileName = "GameAudioConfig")]
     public class GameAudioConfig : ScriptableObject
     {
-        [Header("BGM")]
+        [Header("场景 / 区域 BGM")]
         [SerializeField] private AudioClip ui;
         [SerializeField] private AudioClip forest;
-        [SerializeField] private AudioClip forestAlt;
+        [SerializeField] private AudioClip maze;
+        [SerializeField] private AudioClip stream;
         [SerializeField] private AudioClip city;
-        [SerializeField] private AudioClip wrong;
-        [SerializeField] private AudioClip wrongAlt;
+        [SerializeField] private AudioClip gameOver;
 
         [Header("SFX")]
         [SerializeField] private AudioClip pulse;
-        [SerializeField] private AudioClip pulseAlt;
         [SerializeField] private AudioClip pickup;
         [SerializeField] private AudioClip water;
         [SerializeField] private AudioClip footstep;
-        [SerializeField] private AudioClip footstepAlt;
         [SerializeField] private AudioClip uiClick;
         [SerializeField] private AudioClip speakerSolved;
         [SerializeField] private AudioClip energyInject;
@@ -53,10 +49,10 @@ namespace Gameplay.Audio
             {
                 GameBgm.Ui => ui,
                 GameBgm.Forest => forest,
-                GameBgm.ForestAlt => forestAlt,
+                GameBgm.Maze => maze,
+                GameBgm.Stream => stream,
                 GameBgm.City => city,
-                GameBgm.Wrong => wrong,
-                GameBgm.WrongAlt => wrongAlt,
+                GameBgm.GameOver => gameOver,
                 _ => null,
             };
         }
@@ -66,11 +62,9 @@ namespace Gameplay.Audio
             return id switch
             {
                 GameSfx.Pulse => pulse,
-                GameSfx.PulseAlt => pulseAlt,
                 GameSfx.Pickup => pickup,
                 GameSfx.Water => water,
                 GameSfx.Footstep => footstep,
-                GameSfx.FootstepAlt => footstepAlt,
                 GameSfx.UiClick => uiClick,
                 GameSfx.SpeakerSolved => speakerSolved,
                 GameSfx.EnergyInject => energyInject,

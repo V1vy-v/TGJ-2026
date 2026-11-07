@@ -21,17 +21,17 @@ MonoBehaviour:
   visionSettings:
     normalFov: 60
     blindFov: 40
-    normalRadius: 1.5
-    blindRadius: 0.8
+    normalRadius: 2
+    blindRadius: 1
     normalLightIntensity: 0
-    blindLightIntensity: 0.5
+    blindLightIntensity: 0
     normalLightRange: 0
-    blindLightRange: 0.5
+    blindLightRange: 0
     transitionDuration: 0.3
   pulseSettings:
     duration: 3
     cooldown: 5
-    color: {r: 0.99832636, g: 1, b: 0.28773582, a: 1}
+    color: {r: 1, g: 1, b: 1, a: 1}
     intensity: 1
     radius: 30
     hardness: 0.5

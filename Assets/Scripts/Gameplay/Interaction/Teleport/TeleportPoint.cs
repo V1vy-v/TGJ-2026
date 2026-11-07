@@ -49,6 +49,18 @@ namespace Gameplay.Interaction.Teleport
         [Tooltip("到达后补充的能量格数；0 表示不补充")]
         [SerializeField] private int energyOnArrive;
 
+        [Header("到达后音频")]
+        [Tooltip("到达后是否切换 BGM")]
+        [SerializeField] private bool changeBgmOnArrive;
+
+        [SerializeField] private GameBgm bgmOnArrive = GameBgm.Forest;
+
+        [Tooltip("到达后是否停止环境音")]
+        [SerializeField] private bool stopAmbientOnArrive;
+
+        [Tooltip("到达后是否切换到更暗的迷宫黑场")]
+        [SerializeField] private bool useDarkMazeBlackoutOnArrive;
+
         #endregion
 
         #region 状态
@@ -132,6 +144,18 @@ namespace Gameplay.Interaction.Teleport
                 if (GameRoot.Instance.Services.TryGet<IGameAudio>(out var audio))
                     audio.PlaySfx(GameSfx.EnergyInject);
             }
+
+            if (GameRoot.Instance.Services.TryGet<IGameAudio>(out var gameAudio))
+            {
+                if (changeBgmOnArrive)
+                    gameAudio.PlayBgm(bgmOnArrive);
+
+                if (stopAmbientOnArrive)
+                    gameAudio.StopAmbient();
+            }
+
+            Gameplay.Rendering.MazeBlackoutFeature.SetDarkMaze(
+                useDarkMazeBlackoutOnArrive);
 
             if (enterMazeOnArrive)
             {

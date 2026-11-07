@@ -21,7 +21,7 @@ namespace Gameplay.Interaction.Items
         private void Start()
         {
             _interactionText = 
-                GameRoot.Instance.Services.Get<ILocalizationService>().GetText( pickupTipsKey);
+                GameRoot.Instance.Services.Get<ILocalizationService>().GetText("interaction.Pickup");
         }
 
         public override bool CanInteract(PlayerContext ctx)

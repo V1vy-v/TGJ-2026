@@ -55,3 +55,6 @@ MonoBehaviour:
   - key: interaction.openDoor
     textEn: Open the door
     textCh: "\u5F00\u95E8"
+  - key: interaction.playEnding
+    textEn: End performance
+    textCh: "\u7ED3\u675F\u6F14\u594F"
