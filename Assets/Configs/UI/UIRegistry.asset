@@ -22,6 +22,11 @@ MonoBehaviour:
   - layer: 200
     prefabs:
     - {fileID: 390817400968878765, guid: 034857717d25e694991da9f04b4d4b65, type: 3}
+    - {fileID: 639584339451862459, guid: d4888545460763f4dbd8805a6decce7f, type: 3}
+    - {fileID: -740272031042434672, guid: 4c0763a792365b14cb665c60662400ef, type: 3}
   - layer: 300
     prefabs:
     - {fileID: -9126205388854495088, guid: a14804f454049634488e1b5dde19a7b0, type: 3}
+    - {fileID: 7773131610297176975, guid: 2086e586436ebd54d9a232d6fed13425, type: 3}
+    - {fileID: 6450645147952723102, guid: f6fcb565c85b6a141b96ead93c4299a2, type: 3}
+    - {fileID: 892715010868718740, guid: 738db65f919f3e347a3c3ec543139d52, type: 3}

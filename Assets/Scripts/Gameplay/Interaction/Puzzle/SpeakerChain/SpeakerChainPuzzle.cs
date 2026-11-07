@@ -1,5 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using Framework.Bootstrap;
+using Gameplay.Audio;
+using Gameplay.Flow;
 using UnityEngine;
 
 namespace Gameplay.Interaction.Puzzle.SpeakerChain
@@ -22,12 +26,60 @@ namespace Gameplay.Interaction.Puzzle.SpeakerChain
         [Header("完成后激活")]
         [SerializeField] private List<SpeakerPlatform> liftPlatforms = new();
 
+        [Tooltip("谜题完成后自动播放的 Tips key，可留空")]
+        [SerializeField] private string solvedTipsKey;
+
+        [Tooltip("谜题完成后解锁的复活点 ID，可留空")]
+        [SerializeField] private string checkpointOnSolved;
+
+        [Tooltip("目标被射中后延迟多少秒判定成功")]
+        [SerializeField, Min(0f)] private float solveDelay = 3f;
+
+        [Tooltip("初始化时给链条内所有喇叭通电；用于共用喇叭、需要独立发射的谜题")]
+        [SerializeField] private bool powerAllSpeakers;
+
+        [Header("前置谜题")]
+        [Tooltip("该谜题完成后才初始化本链条；用于共用喇叭的连续谜题")]
+        [SerializeField] private SpeakerChainPuzzle prerequisite;
+
         private bool _solved;
+        private bool _initialized;
+        private Coroutine _solveRoutine;
+
+        public bool IsSolved => _solved;
 
         public event Action OnPuzzleDone;
 
         private void Start()
         {
+            if (prerequisite != null)
+            {
+                prerequisite.OnPuzzleDone += Initialize;
+                if (prerequisite.IsSolved)
+                    Initialize();
+                return;
+            }
+
+            Initialize();
+        }
+
+        private void OnDisable()
+        {
+            if (target != null)
+                target.HitChanged -= OnTargetHitChanged;
+
+            if (prerequisite != null)
+                prerequisite.OnPuzzleDone -= Initialize;
+
+            CancelSolve();
+        }
+
+        private void Initialize()
+        {
+            if (_initialized)
+                return;
+
+            _initialized = true;
             SetupChain();
 
             if (target == null)
@@ -39,13 +91,7 @@ namespace Gameplay.Interaction.Puzzle.SpeakerChain
             target.HitChanged += OnTargetHitChanged;
 
             if (target.IsHit)
-                Activate();
-        }
-
-        private void OnDisable()
-        {
-            if (target != null)
-                target.HitChanged -= OnTargetHitChanged;
+                BeginSolve();
         }
 
         private void SetupChain()
@@ -61,21 +107,43 @@ namespace Gameplay.Interaction.Puzzle.SpeakerChain
                 SpeakerDevice speaker = speakerDevices[i];
                 if (speaker == null) continue;
 
-                Transform aim = i + 1 < speakerDevices.Count
-                    ? speakerDevices[i + 1].transform
-                    : target != null
-                        ? target.transform
-                        : null;
-
-                speaker.SetAimTarget(aim);
-                speaker.SetPowered(i == 0);
+                speaker.SetPowered(powerAllSpeakers || i == 0);
             }
         }
 
         private void OnTargetHitChanged(bool hit)
         {
             if (hit)
+                BeginSolve();
+            else
+                CancelSolve();
+        }
+
+        private void BeginSolve()
+        {
+            if (_solved || _solveRoutine != null)
+                return;
+
+            _solveRoutine = StartCoroutine(SolveAfterDelay());
+        }
+
+        private IEnumerator SolveAfterDelay()
+        {
+            yield return new WaitForSeconds(solveDelay);
+
+            _solveRoutine = null;
+
+            if (target != null && target.IsHit)
                 Activate();
+        }
+
+        private void CancelSolve()
+        {
+            if (_solveRoutine == null)
+                return;
+
+            StopCoroutine(_solveRoutine);
+            _solveRoutine = null;
         }
 
         private void Activate()
@@ -83,6 +151,7 @@ namespace Gameplay.Interaction.Puzzle.SpeakerChain
             if (_solved) return;
 
             _solved = true;
+            CancelSolve();
 
             if (target != null)
                 target.HitChanged -= OnTargetHitChanged;
@@ -94,6 +163,13 @@ namespace Gameplay.Interaction.Puzzle.SpeakerChain
                 liftPlatforms[i]?.Unlock();
 
             OnPuzzleDone?.Invoke();
+            if (!string.IsNullOrWhiteSpace(checkpointOnSolved) &&
+                GameRoot.Instance.Services.TryGet<ICheckpointService>(out var checkpoints))
+            {
+                checkpoints.Unlock(checkpointOnSolved);
+            }
+            GameRoot.Instance.Services.Get<IGameAudio>().PlaySfx(GameSfx.SpeakerSolved);
+            Gameplay.Flow.TipsTrigger.Show(solvedTipsKey);
         }
     }
 }

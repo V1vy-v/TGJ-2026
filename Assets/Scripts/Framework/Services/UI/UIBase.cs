@@ -127,7 +127,7 @@ namespace Framework.Services.UI
             return true;
         }
 
-        private float FadeStep => Time.deltaTime / Mathf.Max(fadeDuration, 0.01f);
+        private float FadeStep => Time.unscaledDeltaTime / Mathf.Max(fadeDuration, 0.01f);
 
         private IEnumerator ShowCoroutine()
         {

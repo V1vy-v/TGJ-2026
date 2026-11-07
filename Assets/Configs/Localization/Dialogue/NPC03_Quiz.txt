@@ -1,0 +1,1 @@
+speaker.npc3 | dialogue.npc1.quiz.question | 1

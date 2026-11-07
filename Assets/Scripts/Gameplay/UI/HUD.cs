@@ -14,7 +14,13 @@ namespace Gameplay.UI
         #region 组件
 
         [SerializeField] private VerticalLayoutGroup interactionArea;
-        [SerializeField] private Image energyBar;
+        [SerializeField] private GameObject energyTank;
+        [SerializeField] private Image energy1;
+        [SerializeField] private Image energy2;
+        [SerializeField] private Image energy3;
+        [SerializeField] private Image energy4;
+        [SerializeField] private Image energy5;
+        [SerializeField] private Image energy6;
         [SerializeField] private Button buttonPrefab;
 
         [SerializeField] private Color normalColor;
@@ -24,10 +30,18 @@ namespace Gameplay.UI
         private PlayerController _player;
         private readonly List<Button> _buttons = new();
         private Coroutine _rejectRoutine;
+        private bool _hasKeyboard;
 
         #endregion
 
         #region 生命周期
+
+        protected override void OnCreate()
+        {
+            base.OnCreate();
+            FindEnergyBindings();
+            SetEnergyVisible(false);
+        }
 
         protected override void OnSetup(object args)
         {
@@ -68,6 +82,7 @@ namespace Gameplay.UI
             _player.Interactor.HighlightChanged += OnHighlightChanged;
             _player.Interactor.InteractionRejected += OnRejected;
             _player.Energy.EnergyChanged += OnEnergyChanged;
+            _player.KeyboardAcquired += OnKeyboardAcquired;
         }
 
         private void Unbind()
@@ -84,6 +99,7 @@ namespace Gameplay.UI
                 _player.Interactor.HighlightChanged -= OnHighlightChanged;
                 _player.Interactor.InteractionRejected -= OnRejected;
                 _player.Energy.EnergyChanged -= OnEnergyChanged;
+                _player.KeyboardAcquired -= OnKeyboardAcquired;
             }
 
             _player = null;
@@ -101,14 +117,85 @@ namespace Gameplay.UI
             OnEnergyChanged(_player.Energy.Current);
         }
 
+        private void OnKeyboardAcquired()
+        {
+            _hasKeyboard = true;
+            SetEnergyVisible(true);
+            OnEnergyChanged(_player != null ? _player.Energy.Current : 0);
+        }
+
         private void OnEnergyChanged(int current)
         {
-            if (energyBar == null || _player == null) return;
+            if (!_hasKeyboard || _player == null)
+            {
+                SetEnergyVisible(false);
+                return;
+            }
 
-            int capacity = _player.Energy.Capacity;
-            energyBar.fillAmount = capacity > 0
-                ? Mathf.Clamp01((float)current / capacity)
-                : 0f;
+            SetEnergyVisible(true);
+
+            // 1~6 各占一格能量。
+            SetCell(energy1, current >= 1);
+            SetCell(energy2, current >= 2);
+            SetCell(energy3, current >= 3);
+            SetCell(energy4, current >= 4);
+            SetCell(energy5, current >= 5);
+            SetCell(energy6, current >= 6);
+        }
+
+        private void SetEnergyVisible(bool visible)
+        {
+            if (energyTank != null)
+                energyTank.SetActive(visible);
+
+            if (!visible)
+            {
+                SetCell(energy1, false);
+                SetCell(energy2, false);
+                SetCell(energy3, false);
+                SetCell(energy4, false);
+                SetCell(energy5, false);
+                SetCell(energy6, false);
+            }
+        }
+
+        private static void SetCell(Image image, bool visible)
+        {
+            if (image != null)
+                image.gameObject.SetActive(visible);
+        }
+
+        private void FindEnergyBindings()
+        {
+            if (energyTank == null)
+            {
+                foreach (var child in GetComponentsInChildren<Transform>(true))
+                {
+                    if (child.name == "EnergyTank")
+                    {
+                        energyTank = child.gameObject;
+                        break;
+                    }
+                }
+            }
+
+            if (energy1 == null) energy1 = FindImage("1");
+            if (energy2 == null) energy2 = FindImage("2");
+            if (energy3 == null) energy3 = FindImage("3");
+            if (energy4 == null) energy4 = FindImage("4");
+            if (energy5 == null) energy5 = FindImage("5");
+            if (energy6 == null) energy6 = FindImage("6");
+        }
+
+        private Image FindImage(string objectName)
+        {
+            foreach (var image in GetComponentsInChildren<Image>(true))
+            {
+                if (image.name == objectName)
+                    return image;
+            }
+
+            return null;
         }
 
         private void OnOptionsChanged(

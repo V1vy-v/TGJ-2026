@@ -25,9 +25,9 @@ namespace Framework.Core
 
         public bool TryGet<T>(out T service) where T : class
         {
-            if (_services.TryGetValue(typeof(T), out var obj))
+            if (_services.TryGetValue(typeof(T), out var value))
             {
-                service = (T)obj;
+                service = (T)value;
                 return true;
             }
 

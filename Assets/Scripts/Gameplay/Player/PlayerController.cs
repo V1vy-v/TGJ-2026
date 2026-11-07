@@ -2,6 +2,7 @@ using System;
 using Framework.Bootstrap;
 using Framework.Services.Input;
 using Framework.Services.UI;
+using Gameplay.Audio;
 using Gameplay.Player.Act;
 using Gameplay.Player.Input;
 using Gameplay.Player.Interaction;
@@ -32,13 +33,25 @@ namespace Gameplay.Player
         private PlayerEnergy _energy;
         private PlayerPulse _pulse;
         private PlayerDialogue _dialogue;
+        private PlayerAnimator _animator;
+        private IGameAudio _gameAudio;
+
+        private const string NarratorSpeakerKey = "speaker.narrator";
+        private const string PlayerSpeakerKey = "speaker.player";
 
         public PlayerDialogue Dialogue => _dialogue;
         public event Action DialogueAdvanceRequested;
+        public event Action KeyboardAcquired;
         
         public PerformanceMode PerformanceMode => _performanceMode;
         public PlayerInteractor Interactor => _interactor;
         public PlayerEnergy Energy => _energy;
+        public bool HasMazeKey { get; private set; }
+
+        public void CollectMazeKey()
+        {
+            HasMazeKey = true;
+        }
 
         [SerializeField] private PlayerConfig playerConfig;
         [SerializeField] private CharacterController controller;
@@ -46,6 +59,9 @@ namespace Gameplay.Player
         [SerializeField] private Camera mainCamera;
         [SerializeField] private float lookSensitivity = 0.15f;
         [SerializeField] private bool invertY;
+
+        [Header("动画")]
+        [SerializeField] private Animator animator;
 
         [Header("交互")] 
         [SerializeField] private Transform interactOrigin;
@@ -56,7 +72,7 @@ namespace Gameplay.Player
         [SerializeField] private GameObject mazeVolume;
         [SerializeField] private Light selfLight;
         [SerializeField] private CinemachineCamera cinemachineCamera;
-        
+
         private bool _inMaze;
         
         #endregion
@@ -66,6 +82,7 @@ namespace Gameplay.Player
         private void Awake()
         {
             var input = GameRoot.Instance.Services.Get<IInputService>();
+            GameRoot.Instance.Services.TryGet<IGameAudio>(out _gameAudio);
 
             _inputMode = new InputModeController(input);
             _inputReader = new PlayerInputReader(input.GetMap("Player"));
@@ -76,16 +93,22 @@ namespace Gameplay.Player
                 _inputReader, orbitalFollow, mainCamera.transform, lookSensitivity, invertY);
             _motor = new PlayerMotor(
                 controller, _inputReader, playerConfig, mainCamera.transform);
+            _motor.Jumped += OnJumped;
             _energy = new PlayerEnergy(
                 playerConfig.InitialEnergy, playerConfig.EnergyCapacity);
             _dialogue = new PlayerDialogue();
 
-            var context = new PlayerContext(transform, _energy, StartDialogue);
+            var modelAnimator = animator != null ? animator : GetComponentInChildren<Animator>(true);
+            _animator = new PlayerAnimator(modelAnimator);
+            if (modelAnimator == null)
+                Debug.LogError("[PlayerController] 未找到 Animator，主角动画不会播放");
+
+            var context = new PlayerContext(transform, _energy, this, StartDialogue);
             _interactor = new PlayerInteractor(
                 interactOrigin, context, interactableLayer, interactRadius);
 
-            _glasses = new PlayerGlasses(_inputReader);
-            _pulse = new PlayerPulse(transform, playerConfig.Pulse);
+            _glasses = new PlayerGlasses();
+            _pulse = new PlayerPulse(transform, playerConfig.Pulse, _gameAudio);
             if (selfLight != null && cinemachineCamera != null)
             {
                 _vision = new PlayerVision(
@@ -97,6 +120,7 @@ namespace Gameplay.Player
             }
 
             _dialogue.Ended += OnDialogueEnded;
+            _dialogue.LineChanged += OnDialogueLineChanged;
             _dialogueInput.AdvancePressed += OnDialogueAdvancePressed;
             _inputReader.InteractPressed += OnInteractPressed;
             _inputReader.PulsePressed += OnPulsePressed;
@@ -115,8 +139,16 @@ namespace Gameplay.Player
         {
             _inputReader.Poll();
 
+            // 暂停时不再驱动相机和移动，避免暂停界面下方镜头继续响应鼠标。
+            if (Time.timeScale <= 0f)
+            {
+                _animator?.Tick(false);
+                return;
+            }
+
             if (_dialogue.IsActive)
             {
+                _animator?.Tick(false);
                 _vision?.Tick(Time.deltaTime);
                 return;
             }
@@ -124,6 +156,7 @@ namespace Gameplay.Player
             _cameraRig.Tick();
             _motor.Tick(Time.deltaTime);
             _interactor.Tick(_inputReader.ScrollValue);
+            _animator?.Tick(_inputReader.MoveValue.sqrMagnitude > 0.01f);
             _vision?.Tick(Time.deltaTime);
         }
 
@@ -131,10 +164,12 @@ namespace Gameplay.Player
         {
             _inputReader.InteractPressed -= OnInteractPressed;
             _dialogue.Ended -= OnDialogueEnded;
+            _dialogue.LineChanged -= OnDialogueLineChanged;
             _dialogueInput.AdvancePressed -= OnDialogueAdvancePressed;
 
             _glasses?.Dispose();
             _vision?.Dispose();
+            _motor.Jumped -= OnJumped;
             _motor?.Dispose();
             _performanceMode?.Dispose();
             _inputReader?.Dispose();
@@ -145,6 +180,22 @@ namespace Gameplay.Player
         #endregion
 
         #region 外部方法
+
+        public void NotifyKeyboardAcquired()
+        {
+            KeyboardAcquired?.Invoke();
+        }
+
+        public void PlayFootstep()
+        {
+            _gameAudio?.PlayFootstep();
+        }
+
+        /// <summary>物品被拾取时由交互物调用，播放一次拾取动作。</summary>
+        public void NotifyItemPickedUp()
+        {
+            _animator?.PlayPickup();
+        }
 
         public void EnterMaze()
         {
@@ -174,7 +225,28 @@ namespace Gameplay.Player
             ScanRendererFeature.Instance?.StopPulse();
             MazeBlackoutFeature.SetEnabled(false);
         }
+        public void TeleportTo(Vector3 position, Quaternion rotation)
+        {
+            if (controller != null)
+                controller.enabled = false;
+
+            transform.SetPositionAndRotation(position, rotation);
+
+            if (controller != null)
+                controller.enabled = true;
+        }
+
         public bool StartDialogue(TextAsset script)
+        {
+            return StartDialogue(script, false);
+        }
+
+        public bool StartStory(TextAsset script)
+        {
+            return StartDialogue(script, true);
+        }
+
+        private bool StartDialogue(TextAsset script, bool isStory)
         {
             if (_dialogue.IsActive)
                 return false;
@@ -186,7 +258,11 @@ namespace Gameplay.Player
             _inputMode.SwitchTo(InputMode.Dialogue);
 
             var ui = GameRoot.Instance.Services.Get<IUIService>();
-            ui.OpenPopup<DialoguePopup>(this);
+
+            if (isStory)
+                ui.OpenPopup<StoryPopup>(this);
+            else
+                ui.OpenPopup<DialoguePopup>(this);
 
             return true;
         }
@@ -214,11 +290,25 @@ namespace Gameplay.Player
         {
             var ui = GameRoot.Instance.Services.Get<IUIService>();
             ui.Close<DialoguePopup>();
+            ui.Close<StoryPopup>();
 
             _inputMode.SwitchTo(InputMode.Player);
             _interactor.Resume();
         }
+
+        private void OnDialogueLineChanged(PlayerDialogue.Line line)
+        {
+            if (line.SpeakerKey == NarratorSpeakerKey || line.SpeakerKey == PlayerSpeakerKey)
+                return;
+
+            _animator?.PlayNod();
+        }
         
+        private void OnJumped()
+        {
+            _animator?.PlayJump();
+        }
+
         private void OnPulsePressed()
         {
             if (!_inMaze) return;

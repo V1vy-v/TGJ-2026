@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfe684761a9a831408ee1e0e400ac34c, type: 3}
   m_Name: UITable
   m_EditorClassIdentifier: Assembly-CSharp::Framework.Services.Localization.LocalizationTable
-  localizationGroups: []
+  localizationGroups:
+  - key: ui.pressAnyKey
+    textEn: Press any key to continue.
+    textCh: "\u6309\u4EFB\u610F\u952E\u7EE7\u7EED"

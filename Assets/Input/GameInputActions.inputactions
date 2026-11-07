@@ -47,16 +47,6 @@
                     "priority": 0
                 },
                 {
-                    "name": "ToggleGlasses",
-                    "type": "Button",
-                    "id": "0a740d00-4d45-4d67-99cc-42b1a9f7421b",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false,
-                    "priority": 0
-                },
-                {
                     "name": "HearingPulse",
                     "type": "Button",
                     "id": "c498e0a6-70cc-49d6-a649-f093a8f57f34",
@@ -207,17 +197,6 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Interact",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "07a68297-7e4c-4d2f-b914-6a184114125c",
-                    "path": "<Keyboard>/f",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "ToggleGlasses",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

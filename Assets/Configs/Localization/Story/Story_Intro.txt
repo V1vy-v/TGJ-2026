@@ -1,0 +1,3 @@
+speaker.narrator | story.intro.1 | 1
+speaker.narrator | story.intro.2 | 1
+speaker.narrator | story.intro.3 | 1

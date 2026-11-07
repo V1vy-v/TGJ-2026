@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfe684761a9a831408ee1e0e400ac34c, type: 3}
+  m_Name: TipsTable
+  m_EditorClassIdentifier: Assembly-CSharp::Framework.Services.Localization.LocalizationTable
+  localizationGroups:
+  - key: tips.turn
+    textEn: 'Which way should I go?
+
+      Press Q to see what happens.'
+    textCh: "\u8BE5\u5F80\u54EA\u8FB9\u8D70\u5462\uFF1F\n\u6309Q\u770B\u770B\u4F1A\u53D1\u751F\u4EC0\u4E48\u5427"
+  - key: tips.exitTunnel
+    textEn: Finally made it out!
+    textCh: "\u7EC8\u4E8E\u8D70\u51FA\u6765\u4E86"
+  - key: tips.keyboardFirst
+    textEn: Huh, what's this? Press E to pick it up and take a look.
+    textCh: "\u8BF6\u8FD9\u662F\u4EC0\u4E48\uFF1F\u6309E\u62FF\u8D77\u6765\u770B\u770B\u5427"
+  - key: tips.keyboardGet
+    textEn: 'You''ve got a keyboard.
+
+      This little keyboard seems to hold great
+      energy.
+
+      Energy is very useful! Collect the energy scattered all around!'
+    textCh: "\u4F60\u83B7\u5F97\u4E00\u4E2A\u952E\u76D8\n\u5C0F\u5C0F\u7684\u952E\u76D8\u4F3C\u4E4E\u8574\u542B\u5F88\u5F3A\u7684\u80FD\u91CF\n\u80FD\u91CF\u7684\u7528\u5904\u5F88\u5927\uFF0C\u6536\u96C6\u6563\u843D\u5728\u5404\u5904\u7684\u80FD\u91CF\u5427\uFF01"
+  - key: tips.energyDevice
+    textEn: There are energy devices ahead. Try injecting energy.
+    textCh: "\u524D\u65B9\u6709\u4E00\u4E9B\u80FD\u91CF\u88C5\u7F6E\uFF0C\u8BD5\u8BD5\u6CE8\u5165\u80FD\u91CF"
+  - key: tips.speaker
+    textEn: What a messy bunch of speakers! Adjust their directions.
+    textCh: "\u597D\u6742\u4E71\u7684\u5587\u53ED\uFF0C\u8C03\u6574\u4E00\u4E0B\u5B83\u4EEC\u7684\u65B9\u5411\u5427\uFF01"
+  - key: tips.speakerConnected
+    textEn: It's connected! See if anything has changed!
+    textCh: "\u8FDE\u4E0A\u4E86\uFF01\u770B\u770B\u6709\u6CA1\u6709\u4EC0\u4E48\u53D8\u5316\uFF01"
+  - key: tips.platform
+    textEn: Adjust the platform's height so the sound can keep traveling through.
+    textCh: "\u8C03\u6574\u5E73\u53F0\u9AD8\u5EA6\uFF0C\u8BA9\u58F0\u97F3\u7EE7\u7EED\u4F20\u8FC7\u53BB\u3002"
+  - key: tips.door
+    textEn: The door is closed. Try searching around for a key.
+    textCh: "\u95E8\u5173\u4E0A\u4E86\uFF0C\u8BD5\u8BD5\u5728\u5468\u56F4\u641C\u5BFB\u5230\u94A5\u5319"
+  - key: tips.keyGet
+    textEn: You've got a key. It might be useful.
+    textCh: "\u4F60\u83B7\u5F97\u4E00\u628A\u94A5\u5319\uFF0C\u6216\u8BB8\u4F1A\u6709\u7528\u5904"
+  - key: tips.move
+    textEn: Press W to move forward.
+    textCh: "\u6309w\u524D\u8FDB"
+  - key: tips.jump
+    textEn: Press Space to jump.
+    textCh: "\u6309\u7A7A\u683C\u8DF3\u8DC3"
+  - key: tips.key
+    textEn: Press E to pick up.
+    textCh: "\u6309E\u62FE\u53D6"
+  - key: tips.npc1Meet
+    textEn: There seems to be someone ahead. Ask what happened.
+    textCh: "\u524D\u9762\u597D\u50CF\u6709\u4EBA\uFF0C\u95EE\u95EE\u4ED6\u53D1\u751F\u4E86\u4EC0\u4E48\u5427"

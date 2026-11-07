@@ -1,0 +1,2 @@
+speaker.npc2 | dialogue.npc2.001.text | 1
+speaker.npc2 | dialogue.npc2.002.text | 1

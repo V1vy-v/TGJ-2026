@@ -28,3 +28,30 @@ MonoBehaviour:
   - key: interaction.turnRight
     textEn: Turn right
     textCh: "\u5F80\u53F3\u8F6C"
+  - key: interaction.Pickup
+    textEn: Pick up
+    textCh: "\u62FE\u53D6"
+  - key: interaction.enterCave
+    textEn: Enter the cave
+    textCh: "\u8FDB\u5165\u6D1E\u7A74"
+  - key: interaction.exitCave
+    textEn: Leave the cave
+    textCh: "\u79BB\u5F00\u6D1E\u7A74"
+  - key: interaction.injectOne
+    textEn: Inject one cell.
+    textCh: "\u6CE8\u5165\u4E00\u683C"
+  - key: interaction.recoverOne
+    textEn: Recycle one cell.
+    textCh: "\u56DE\u6536\u4E00\u683C"
+  - key: interaction.leaveForest
+    textEn: Leave the forest
+    textCh: "\u79BB\u5F00\u68EE\u6797"
+  - key: interaction.enterMaze
+    textEn: Get into the pipeline
+    textCh: "\u8FDB\u5165\u7BA1\u9053"
+  - key: interaction.exitMaze
+    textEn: Exit the pipeline
+    textCh: "\u79BB\u5F00\u7BA1\u9053"
+  - key: interaction.openDoor
+    textEn: Open the door
+    textCh: "\u5F00\u95E8"

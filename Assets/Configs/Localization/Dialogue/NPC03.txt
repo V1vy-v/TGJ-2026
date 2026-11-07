@@ -1,0 +1,1 @@
+speaker.npc3 | dialogue.npc3.001.text | 1

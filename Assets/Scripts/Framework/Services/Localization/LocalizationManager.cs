@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Framework.Core;
 using UnityEngine;
@@ -82,14 +82,15 @@ namespace Framework.Services.Localization
             {
                 foreach (var table in _tables)
                     foreach (var group in table.LocalizationGroups)
-                        _currentTexts[group.Key] = group.TextEn;
+                        _currentTexts[group.Key] =
+                            string.IsNullOrEmpty(group.TextEn) ? group.TextCh : group.TextEn;
             }
             else
             {
                 foreach (var table in _tables)
                     foreach (var group in table.LocalizationGroups)
                         _currentTexts[group.Key] =
-                            group.TextCh == string.Empty ? group.TextEn : group.TextCh;
+                            string.IsNullOrEmpty(group.TextCh) ? group.TextEn : group.TextCh;
             }
         }
 

@@ -1,5 +1,13 @@
 {
   "dependencies": {
+    "com.deltation.toon-shader": {
+      "version": "file:com.deltation.toon-shader",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.render-pipelines.universal": "12.1.6"
+      }
+    },
     "com.tuyoogame.yooasset": {
       "version": "https://github.com/tuyoogame/YooAsset.git?path=/Assets/YooAsset#3.0.6",
       "depth": 0,

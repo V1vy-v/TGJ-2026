@@ -13,6 +13,8 @@ namespace Gameplay.Player.Act
         private float _verticalVelocity = -2f;
         private bool _disposed;
 
+        public event Action Jumped;
+
         public PlayerMotor(CharacterController controller, PlayerInputReader playerInput, PlayerConfig playerConfig,
             Transform mainCameraTransform)
         {
@@ -62,6 +64,7 @@ namespace Gameplay.Player.Act
         {
             if (!_controller.isGrounded) return;
             _verticalVelocity = Mathf.Sqrt(2f * _playerConfig.Gravity * _playerConfig.JumpHeight);
+            Jumped?.Invoke();
         }
 
         public void Dispose()

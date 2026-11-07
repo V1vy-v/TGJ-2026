@@ -1,0 +1,1 @@
+speaker.narrator | story.firstEnd.1 | 1

@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Framework.Bootstrap;
+using Gameplay.Audio;
 using Gameplay.Interaction.Interface;
 using Gameplay.Player.Interaction;
 using UnityEngine;
@@ -38,10 +40,11 @@ namespace Gameplay.Interaction.Puzzle.Energy
             if (!isAdjustable || _locked)
                 return Array.Empty<InteractionOption>();
 
+            var localization = GameRoot.Instance.Services.Get<Framework.Services.Localization.ILocalizationService>();
             return new[]
             {
-                Option("注入一格", _ => TryReceiveEnergy(ctx, 1)),
-                Option("回收一格", _ => TryReleaseEnergy(ctx, 1)),
+                Option(localization.GetText("interaction.injectOne"), _ => TryReceiveEnergy(ctx, 1)),
+                Option(localization.GetText("interaction.recoverOne"), _ => TryReleaseEnergy(ctx, 1)),
             };
         }
 
@@ -60,6 +63,7 @@ namespace Gameplay.Interaction.Puzzle.Energy
 
             _energy += amount;
             EnergyChanged?.Invoke();
+            GameRoot.Instance.Services.Get<IGameAudio>().PlaySfx(GameSfx.EnergyInject);
             return true;
         }
 
@@ -73,6 +77,7 @@ namespace Gameplay.Interaction.Puzzle.Energy
 
             _energy -= amount;
             EnergyChanged?.Invoke();
+            GameRoot.Instance.Services.Get<IGameAudio>().PlaySfx(GameSfx.EnergyInject);
             return true;
         }
     }

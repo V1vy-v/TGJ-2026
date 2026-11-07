@@ -133,16 +133,6 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""priority"": 0
                 },
                 {
-                    ""name"": ""ToggleGlasses"",
-                    ""type"": ""Button"",
-                    ""id"": ""0a740d00-4d45-4d67-99cc-42b1a9f7421b"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false,
-                    ""priority"": 0
-                },
-                {
                     ""name"": ""HearingPulse"",
                     ""type"": ""Button"",
                     ""id"": ""c498e0a6-70cc-49d6-a649-f093a8f57f34"",
@@ -293,17 +283,6 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""07a68297-7e4c-4d2f-b914-6a184114125c"",
-                    ""path"": ""<Keyboard>/f"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""ToggleGlasses"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1080,7 +1059,6 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
-        m_Player_ToggleGlasses = m_Player.FindAction("ToggleGlasses", throwIfNotFound: true);
         m_Player_HearingPulse = m_Player.FindAction("HearingPulse", throwIfNotFound: true);
         m_Player_Scroll = m_Player.FindAction("Scroll", throwIfNotFound: true);
         // UI
@@ -1192,7 +1170,6 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Interact;
-    private readonly InputAction m_Player_ToggleGlasses;
     private readonly InputAction m_Player_HearingPulse;
     private readonly InputAction m_Player_Scroll;
     /// <summary>
@@ -1222,10 +1199,6 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Interact".
         /// </summary>
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/ToggleGlasses".
-        /// </summary>
-        public InputAction @ToggleGlasses => m_Wrapper.m_Player_ToggleGlasses;
         /// <summary>
         /// Provides access to the underlying input action "Player/HearingPulse".
         /// </summary>
@@ -1272,9 +1245,6 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
-            @ToggleGlasses.started += instance.OnToggleGlasses;
-            @ToggleGlasses.performed += instance.OnToggleGlasses;
-            @ToggleGlasses.canceled += instance.OnToggleGlasses;
             @HearingPulse.started += instance.OnHearingPulse;
             @HearingPulse.performed += instance.OnHearingPulse;
             @HearingPulse.canceled += instance.OnHearingPulse;
@@ -1304,9 +1274,6 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
-            @ToggleGlasses.started -= instance.OnToggleGlasses;
-            @ToggleGlasses.performed -= instance.OnToggleGlasses;
-            @ToggleGlasses.canceled -= instance.OnToggleGlasses;
             @HearingPulse.started -= instance.OnHearingPulse;
             @HearingPulse.performed -= instance.OnHearingPulse;
             @HearingPulse.canceled -= instance.OnHearingPulse;
@@ -1877,13 +1844,6 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnInteract(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "ToggleGlasses" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnToggleGlasses(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "HearingPulse" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

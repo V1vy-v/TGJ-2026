@@ -23,11 +23,33 @@ MonoBehaviour:
     textEn: mira
     textCh: "\u7C73\u62C9"
   - key: dialogue.npc1.001.text
-    textEn: Hello!
-    textCh: "\u4F60\u597D\u5440\uFF01"
+    textEn: Little mole, is that a keyboard in your hand?
+    textCh: "\u5C0F\u9F39\u9F20\uFF0C\u4F60\u624B\u4E0A\u62FF\u7684\u662F\u952E\u76D8\u5417\uFF1F"
   - key: dialogue.npc1.002.text
-    textEn: You are so cute!
-    textCh: "\u4F60\u771F\u53EF\u7231\uFF01"
-  - key: dialogue.npc1.003.text
-    textEn: Goodbye!
-    textCh: "\u518D\u89C1\uFF01"
+    textEn: There seems to be collectable energy nearby. Go look for it!
+    textCh: "\u9644\u8FD1\u4F3C\u4E4E\u6709\u53EF\u4EE5\u6536\u96C6\u7684\u80FD\u91CF\uFF0C\u53BB\u627E\u627E\u770B\u5427\uFF01"
+  - key: dialogue.npc2.001.text
+    textEn: Pay attention to the positions of the speakers.
+    textCh: "\u6CE8\u610F\u89C2\u5BDF\u5587\u53ED\u7684\u4F4D\u7F6E\u54E6"
+  - key: dialogue.npc3.001.text
+    textEn: You're finally here! A performance is going on at the square ahead. Go
+      check it out!
+    textCh: "\u4F60\u7EC8\u4E8E\u6765\u4E86\uFF01\u524D\u9762\u7684\u5E7F\u573A\u6B63\u5728\u6F14\u51FA\u3002\u5FEB\u53BB\u770B\u770B\u5427\uFF01"
+  - key: dialogue.npc2.002.text
+    textEn: Keep going, little mole! Onward!
+    textCh: "\u52A0\u6CB9\u5C0F\u9F39\u9F20\uFF0C\u7EE7\u7EED\u5411\u524D\uFF01"
+  - key: dialogue.npc1.quiz.question
+    textEn: How many speakers are there on the field?
+    textCh: "\u573A\u4E0A\u6709\u591A\u5C11\u5587\u53ED\uFF1F"
+  - key: dialogue.npc1.quiz.option5
+    textEn: Five.
+    textCh: "5\u4E2A"
+  - key: dialogue.npc1.quiz.option4
+    textEn: Four.
+    textCh: "4\u4E2A"
+  - key: dialogue.npc1.quiz.correct
+    textEn: That's correct!
+    textCh: "\u7B54\u5BF9\u4E86\uFF01"
+  - key: dialogue.npc1.quiz.wrong
+    textEn: Wrong answer. Think again?
+    textCh: "\u7B54\u9519\u4E86\uFF0C\u518D\u60F3\u60F3\u5462"

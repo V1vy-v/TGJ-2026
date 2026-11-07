@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Framework.Core;
 using Framework.Services.Assets;
 using Framework.Services.Assets.Providers;
+using Framework.Services.Audio;
 using Framework.Services.Input;
 using Framework.Services.Localization;
 using Framework.Services.SceneFlow;
@@ -51,6 +52,8 @@ namespace Framework.Bootstrap
             _managers.Add(new InputManager(Config.InputAsset));
             // Order 15
             _managers.Add(new LocalizationManager(Config.LocalizationTables));
+            // Order 20
+            _managers.Add(new AudioManager(Config.MainAudioMixer));
             // Order 30
             _managers.Add(new SceneFlowManager());
             // Order 40

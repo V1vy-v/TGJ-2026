@@ -1,6 +1,7 @@
 using Framework.Bootstrap;
 using Framework.Services.SceneFlow;
 using Framework.Services.UI;
+using Gameplay.Audio;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +17,6 @@ namespace Gameplay.UI
 
         [SerializeField] private Button startBtn;
         [SerializeField] private Button settingsBtn;
-        [SerializeField] private Button continueBtn;
         [SerializeField] private Button quitBtn;
 
         #endregion
@@ -24,6 +24,7 @@ namespace Gameplay.UI
         #region 状态
 
         private bool _starting;
+        private IGameAudio _audio;
 
         #endregion
 
@@ -33,6 +34,8 @@ namespace Gameplay.UI
         {
             base.OnCreate();
 
+            _audio = GameRoot.Instance.Services.TryGet<IGameAudio>(out var audio) ? audio : null;
+
             if (startBtn != null)
                 startBtn.onClick.AddListener(OnStart);
 
@@ -40,10 +43,16 @@ namespace Gameplay.UI
                 quitBtn.onClick.AddListener(OnQuit);
 
             if (settingsBtn != null)
-                settingsBtn.interactable = false;
+            {
+                settingsBtn.interactable = true;
+                settingsBtn.onClick.AddListener(OpenSettings);
+            }
+        }
 
-            if (continueBtn != null)
-                continueBtn.interactable = false;
+        private void OpenSettings()
+        {
+            _audio?.PlaySfx(GameSfx.UiClick);
+            GameRoot.Instance.Services.Get<IUIService>().OpenOverlay<SettingPanel>();
         }
 
         #endregion
@@ -55,6 +64,8 @@ namespace Gameplay.UI
             if (_starting) return;
             _starting = true;
 
+            _audio?.PlaySfx(GameSfx.UiClick);
+
             var ui = GameRoot.Instance.Services.Get<IUIService>();
             ui.Close<BeginScreen>();
 
@@ -64,6 +75,7 @@ namespace Gameplay.UI
 
         private void OnQuit()
         {
+            _audio?.PlaySfx(GameSfx.UiClick);
             Application.Quit();
         }
 

@@ -16,8 +16,8 @@ MonoBehaviour:
   mainAudioMixer: {fileID: 0}
   localizationTables:
   - {fileID: 11400000, guid: 6e54e24ffd4c44e47b1354c6d2a1180f, type: 2}
+  - {fileID: 11400000, guid: 97293e0deaa0bcc4691e018ba78935e3, type: 2}
   - {fileID: 11400000, guid: 654f8744925e000459d6cf59a57dc79b, type: 2}
-  - {fileID: 11400000, guid: c74541fa3bb0cb84ba9b180b98254ba3, type: 2}
   - {fileID: 11400000, guid: ec3fdae2ae948f545a74c318a5eed312, type: 2}
   - {fileID: 11400000, guid: 6809918aa63a4e442a743e4756bfb960, type: 2}
   uiRoot: {fileID: 5267528224484321319, guid: b7dd44e40f8166749b515c340a12390c, type: 3}

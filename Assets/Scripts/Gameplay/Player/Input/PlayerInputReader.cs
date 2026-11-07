@@ -11,7 +11,6 @@ namespace Gameplay.Player.Input
         private readonly InputAction _look;
         private readonly InputAction _jump;
         private readonly InputAction _interact;
-        private readonly InputAction _glasses;
         private readonly InputAction _pulse;
         private readonly InputAction _scroll;
 
@@ -21,7 +20,6 @@ namespace Gameplay.Player.Input
 
         public event Action JumpPressed;
         public event Action InteractPressed;
-        public event Action GlassesPressed;
         public event Action PulsePressed;
         public event Action RecordPressed;
 
@@ -33,13 +31,11 @@ namespace Gameplay.Player.Input
             _look = _map.FindAction("Look", true);
             _jump = _map.FindAction("Jump", true);
             _interact = _map.FindAction("Interact", true);
-            _glasses = _map.FindAction("ToggleGlasses", true);
             _pulse = _map.FindAction("HearingPulse", true);
             _scroll = _map.FindAction("Scroll", true);
 
             _jump.performed += OnJump;
             _interact.performed += OnInteract;
-            _glasses.performed += OnGlasses;
             _pulse.performed += OnPulse;
         }
 
@@ -62,13 +58,11 @@ namespace Gameplay.Player.Input
         {
             _jump.performed -= OnJump;
             _interact.performed -= OnInteract;
-            _glasses.performed -= OnGlasses;
             _pulse.performed -= OnPulse;
         }
 
         private void OnJump(InputAction.CallbackContext _) => JumpPressed?.Invoke();
         private void OnInteract(InputAction.CallbackContext _) => InteractPressed?.Invoke();
-        private void OnGlasses(InputAction.CallbackContext _) => GlassesPressed?.Invoke();
         private void OnPulse(InputAction.CallbackContext _) => PulsePressed?.Invoke();
         private void OnRecord(InputAction.CallbackContext _) => RecordPressed?.Invoke();
     }

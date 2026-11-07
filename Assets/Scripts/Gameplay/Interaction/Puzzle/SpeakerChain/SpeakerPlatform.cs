@@ -4,25 +4,32 @@ using UnityEngine;
 namespace Gameplay.Interaction.Puzzle.SpeakerChain
 {
     /// <summary>
-    /// 升降台：被 Puzzle 一次性激活后，在 up / down 之间循环，可携带乘客。
+    /// 移动平台：被 Puzzle 一次性激活后，在起点和终点之间匀速折返，可携带乘客。
+    /// 两个端点都使用本地坐标。
     /// </summary>
     public class SpeakerPlatform : MonoBehaviour
     {
-        [Header("移动范围（世界 Y）")]
-        [SerializeField] private float down;
-        [SerializeField] private float up;
+        [Header("移动端点（本地坐标）")]
+        [SerializeField] private Vector3 startPoint;
+        [SerializeField] private Vector3 endPoint;
+
         [SerializeField] private float speed = 1f;
 
+        [Tooltip("到端点后停留多久再反向")]
+        [SerializeField] private float stopDuration = 2f;
+
         [Header("乘客检测")]
-        [SerializeField] private Vector3 passengerCheckSize = new(3f, 0.4f, 3f);
-        [SerializeField] private Vector3 passengerCheckOffset = new(0f, 0.2f, 0f);
+        [SerializeField] private Vector3 passengerCheckSize = new(3f, 2f, 3f);
+        [SerializeField] private Vector3 passengerCheckOffset = new(0f, 1f, 0f);
         [SerializeField] private LayerMask passengerMask = ~0;
 
         private readonly Collider[] _hits = new Collider[8];
         private readonly List<CharacterController> _passengers = new();
 
         private bool _unlocked;
-        private int _direction = 1;
+        private bool _movingToEnd = true;
+        private bool _waiting;
+        private float _waitTimer;
 
         public void Unlock()
         {
@@ -34,31 +41,50 @@ namespace Gameplay.Interaction.Puzzle.SpeakerChain
             if (!_unlocked)
                 return;
 
-            float targetY = _direction > 0 ? up : down;
-            Vector3 before = transform.position;
+            if (_waiting)
+            {
+                _waitTimer -= Time.deltaTime;
+                if (_waitTimer > 0f)
+                    return;
 
-            Vector3 next = Vector3.MoveTowards(
-                before,
-                new Vector3(before.x, targetY, before.z),
+                _waiting = false;
+                _movingToEnd = !_movingToEnd;
+            }
+
+            // 先记录当前站在平台上的乘客，再移动平台。
+            // 这样水平移动时，不会因为平台先移走而检测不到玩家。
+            CollectPassengers();
+
+            Vector3 beforeWorld = transform.position;
+            Vector3 beforeLocal = transform.localPosition;
+            Vector3 targetLocal = _movingToEnd ? endPoint : startPoint;
+
+            Vector3 nextLocal = Vector3.MoveTowards(
+                beforeLocal,
+                targetLocal,
                 speed * Time.deltaTime);
 
-            transform.position = next;
+            transform.localPosition = nextLocal;
 
-            if (Mathf.Abs(next.y - targetY) < 0.001f)
-                _direction = -_direction;
+            if ((nextLocal - targetLocal).sqrMagnitude < 0.000001f)
+            {
+                // 到端点后先停住，等待 stopDuration，再反向。
+                _waiting = true;
+                _waitTimer = stopDuration;
+            }
 
-            Vector3 delta = next - before;
+            Vector3 delta = transform.position - beforeWorld;
             if (delta.sqrMagnitude > 0f)
-                CarryPassengers(delta);
+                MovePassengers(delta);
         }
 
-        private void CarryPassengers(Vector3 delta)
+        private void CollectPassengers()
         {
             int count = Physics.OverlapBoxNonAlloc(
                 transform.TransformPoint(passengerCheckOffset),
                 passengerCheckSize * 0.5f,
                 _hits,
-                Quaternion.identity,
+                transform.rotation,
                 passengerMask,
                 QueryTriggerInteraction.Ignore);
 
@@ -72,9 +98,30 @@ namespace Gameplay.Interaction.Puzzle.SpeakerChain
 
                 _passengers.Add(controller);
             }
+        }
 
+        private void MovePassengers(Vector3 delta)
+        {
             for (int i = 0; i < _passengers.Count; i++)
-                _passengers[i].Move(delta);
+            {
+                CharacterController controller = _passengers[i];
+                if (controller == null)
+                    continue;
+
+                Vector3 before = controller.transform.position;
+                controller.Move(delta);
+
+                // CharacterController 在平台边缘可能被平台自身 Collider 挡住，
+                // 导致水平方向只被平台推着走。把剩余位移补上。
+                Vector3 moved = controller.transform.position - before;
+                Vector3 remaining = delta - moved;
+                if (remaining.sqrMagnitude < 0.000001f)
+                    continue;
+
+                controller.enabled = false;
+                controller.transform.position += remaining;
+                controller.enabled = true;
+            }
         }
     }
 }
